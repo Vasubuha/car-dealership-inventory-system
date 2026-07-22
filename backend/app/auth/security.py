@@ -8,7 +8,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 from app.database.config import get_settings
 from app.database.session import get_db
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import TokenData
 
@@ -68,3 +68,8 @@ def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+def require_admin(current_user: User = Depends(get_current_user)) -> User:
+    if current_user.role is not UserRole.ADMIN:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required")
+    return current_user
