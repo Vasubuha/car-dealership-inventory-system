@@ -1,0 +1,2 @@
+import type { ReactNode } from 'react'
+export default function FormMessage({ children }: {children?: ReactNode}) { return children ? <p className="mt-1.5 whitespace-pre-line text-xs leading-5 text-rose-600" role="alert">{children}</p> : null }
