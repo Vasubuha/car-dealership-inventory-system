@@ -1,33 +1,17 @@
-import { Route, Routes } from 'react-router-dom'
-
-import AddVehicle from '../pages/admin/AddVehicle'
-import AdminDashboard from '../pages/admin/AdminDashboard'
-import EditVehicle from '../pages/admin/EditVehicle'
-import ManageVehicles from '../pages/admin/ManageVehicles'
-import Dashboard from '../pages/Dashboard'
-import Home from '../pages/Home'
-import Authentication from '../pages/Authentication'
-import Profile from '../pages/Profile'
-import Register from '../pages/Register'
-import VehicleDetails from '../pages/VehicleDetails'
-import AdminRoute from './AdminRoute'
-import ProtectedRoute from './ProtectedRoute'
+import { Navigate, Route, Routes } from "react-router-dom";
+import Authentication from "../pages/Authentication";
+import Dashboard from "../pages/Dashboard";
+import Vehicles from "../pages/Vehicles";
+import VehicleDetails from "../pages/VehicleDetails";
+import Profile from "../pages/Profile";
+import Settings from "../pages/Settings";
+import Unauthorized from "../pages/Unauthorized";
+import Placeholder from "../pages/Placeholder";
+import AddVehicle from "../pages/admin/AddVehicle";
+import EditVehicle from "../pages/admin/EditVehicle";
+import MainLayout from "../layouts/MainLayout";
+import ProtectedRoute from "./ProtectedRoute";
+import AdminRoute from "./AdminRoute";
 import NotFound from "../pages/NotFound";
-
-export default function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Authentication />} />
-      <Route path="/register" element={<Authentication />} />
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-      <Route path="/vehicle/:id" element={<VehicleDetails />} />
-      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-      <Route path="/admin/vehicles" element={<AdminRoute><ManageVehicles /></AdminRoute>} />
-      <Route path="/admin/vehicles/add" element={<AdminRoute><AddVehicle /></AdminRoute>} />
-      <Route path="/admin/vehicles/edit/:id" element={<AdminRoute><EditVehicle /></AdminRoute>} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  )
-}
+const protectedPage=(page)=><ProtectedRoute>{page}</ProtectedRoute>;const adminPage=(page)=><AdminRoute>{page}</AdminRoute>;
+export default function AppRoutes(){return <Routes><Route path="/" element={<Navigate to="/dashboard" replace/>}/><Route path="/login" element={<Authentication/>}/><Route path="/register" element={<Authentication/>}/><Route element={protectedPage(<MainLayout/>)}><Route path="/dashboard" element={<Dashboard/>}/><Route path="/vehicles" element={<Vehicles/>}/><Route path="/vehicles/:id" element={<VehicleDetails/>}/><Route path="/profile" element={<Profile/>}/><Route path="/settings" element={<Settings/>}/><Route path="/purchases" element={<Placeholder title="Purchases"/>}/><Route path="/vehicles/add" element={adminPage(<AddVehicle/>)}/><Route path="/vehicles/:id/edit" element={adminPage(<EditVehicle/>)}/><Route path="/inventory" element={adminPage(<Placeholder title="Inventory management"/>)}/><Route path="/reports" element={adminPage(<Placeholder title="Reports"/>)}/><Route path="/users" element={adminPage(<Placeholder title="Users management"/>)}/></Route><Route path="/unauthorized" element={<Unauthorized/>}/><Route path="*" element={<NotFound/>}/></Routes>}

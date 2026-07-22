@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'user' | string
+﻿export type UserRole = 'admin' | 'customer' | string
 export interface AuthUser { id?: number; username?: string; email?: string; role?: UserRole }
 export interface LoginPayload { email: string; password: string }
 export interface RegisterPayload extends LoginPayload { username: string }
