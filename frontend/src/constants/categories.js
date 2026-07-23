@@ -1,0 +1,17 @@
+export const VEHICLE_CATEGORIES = [
+  'Sedan',
+  'SUV',
+  'Hatchback',
+  'Coupe',
+  'Convertible',
+  'Wagon',
+  'Pickup Truck',
+  'Van',
+  'Minivan',
+  'Luxury',
+  'Sports',
+  'Electric',
+  'Hybrid',
+  'Crossover',
+  'Off-Road',
+];

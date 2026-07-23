@@ -3,15 +3,22 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
 
 class VehicleFields(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
     make: str = Field(min_length=1, max_length=100)
     model: str = Field(min_length=1, max_length=100)
     category: str = Field(min_length=1, max_length=100)
     price: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
     quantity: int = Field(default=1, ge=0)
+    image_url: str | None = Field(
+        default=None,
+        max_length=2048,
+        validation_alias=AliasChoices("image_url", "imageUrl"),
+    )
 
     @field_validator("make", "model", "category")
     @classmethod
@@ -27,11 +34,18 @@ class VehicleCreate(VehicleFields):
 
 
 class VehicleUpdate(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
     make: str | None = Field(default=None, min_length=1, max_length=100)
     model: str | None = Field(default=None, min_length=1, max_length=100)
     category: str | None = Field(default=None, min_length=1, max_length=100)
     price: Decimal | None = Field(default=None, gt=0, max_digits=12, decimal_places=2)
     quantity: int | None = Field(default=None, ge=0)
+    image_url: str | None = Field(
+        default=None,
+        max_length=2048,
+        validation_alias=AliasChoices("image_url", "imageUrl"),
+    )
 
     @field_validator("make", "model", "category")
     @classmethod
@@ -53,8 +67,20 @@ class VehicleSearchQuery(BaseModel):
 
 
 class VehicleResponse(VehicleFields):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
     id: UUID
     created_at: datetime
     updated_at: datetime
+    image_url: str | None = Field(
+        default=None,
+        max_length=2048,
+        validation_alias=AliasChoices("image_url", "imageUrl"),
+    )
+    imageUrl: str | None = Field(
+        default=None,
+        max_length=2048,
+        validation_alias=AliasChoices("image_url", "imageUrl"),
+    )
+
+

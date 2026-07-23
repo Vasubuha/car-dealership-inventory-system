@@ -45,10 +45,24 @@ export default function VehicleDetails() {
         Back to inventory
       </button>
       <div className="grid overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm lg:grid-cols-2">
-        <div className="min-h-80 bg-gradient-to-br from-blue-950 via-blue-800 to-slate-800 p-10 text-white">
-          <p className="text-sm uppercase tracking-[.25em] text-blue-200">{v.category}</p>
-          <h1 className="mt-20 text-5xl font-black italic">{v.make}</h1>
-          <p className="mt-2 text-xl text-blue-100">{v.model}</p>
+        <div className="relative min-h-80 overflow-hidden bg-slate-900 p-10 text-white flex flex-col justify-between">
+          <img
+            src={v.imageUrl || v.image_url || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80'}
+            alt={`${v.make} ${v.model}`}
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80';
+            }}
+            className="absolute inset-0 h-full w-full object-cover opacity-50"
+          />
+          <div className="relative z-10">
+            <p className="text-xs font-bold uppercase tracking-[.25em] text-blue-300 bg-blue-950/80 px-3 py-1 rounded-full inline-block backdrop-blur-xs">
+              {v.category}
+            </p>
+          </div>
+          <div className="relative z-10 mt-16">
+            <h1 className="text-4xl font-black italic text-white drop-shadow-md sm:text-5xl">{v.make}</h1>
+            <p className="mt-1 text-xl font-medium text-blue-100 drop-shadow-sm">{v.model}</p>
+          </div>
         </div>
         <div className="p-8 lg:p-12">
           <p className="text-sm font-semibold text-slate-500">Starting at</p>
