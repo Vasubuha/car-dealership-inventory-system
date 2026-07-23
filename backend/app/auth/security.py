@@ -1,9 +1,8 @@
-"""Password hashing, JWT helpers, and authentication dependencies."""
+import bcrypt
 from datetime import UTC, datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 from app.database.config import get_settings
@@ -12,7 +11,6 @@ from app.models.user import User, UserRole
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import TokenData
 
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 bearer_scheme = HTTPBearer(auto_error=False)
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -21,12 +19,14 @@ credentials_exception = HTTPException(
 )
 
 def hash_password(password: str) -> str:
-    return password_context.hash(password)
+    pwd_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(pwd_bytes, salt).decode('utf-8')
 
 def verify_password(plain_password: str, password_hash: str) -> bool:
     try:
-        return password_context.verify(plain_password, password_hash)
-    except ValueError:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), password_hash.encode('utf-8'))
+    except Exception:
         return False
 
 def create_access_token(user_id: int) -> str:
