@@ -4,6 +4,7 @@ from app.database.config import get_settings
 from app.database.session import Base
 import app.models.user
 import app.models.vehicle
+import app.models.purchase
 
 config = context.config
 config.set_main_option("sqlalchemy.url", get_settings().database_url)

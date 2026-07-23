@@ -1,9 +1,18 @@
 """User persistence model."""
+from __future__ import annotations
+
 from datetime import datetime
 from enum import Enum
+from typing import TYPE_CHECKING
+
 from sqlalchemy import DateTime, Enum as SqlEnum, String, UniqueConstraint, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.database.session import Base
+
+if TYPE_CHECKING:
+    from app.models.purchase import Purchase
+
 
 class UserRole(str, Enum):
     ADMIN = "admin"
@@ -30,3 +39,4 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
+    purchases: Mapped[list[Purchase]] = relationship(back_populates="user")
