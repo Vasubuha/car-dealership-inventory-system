@@ -29,6 +29,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(auth_router, prefix="/auth")
 app.include_router(vehicle_router)
 app.include_router(inventory_router)
 app.include_router(purchases_router)

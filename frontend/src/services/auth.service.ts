@@ -1,26 +1,13 @@
+import api from './api';
 import axios, { AxiosError } from 'axios';
 import type { LoginPayload, LoginResponse, RegisterPayload } from '../types/auth';
 
-interface ImportMetaEnv {
-  readonly VITE_API_URL?: string;
-}
-
-declare global {
-  interface ImportMeta {
-    readonly env: ImportMetaEnv;
-  }
-}
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api',
-  headers: { 'Content-Type': 'application/json' },
-});
 export const authService = {
   register: async (payload: RegisterPayload): Promise<void> => {
-    await api.post('/auth/register', payload);
+    await api.post('/api/auth/register', payload);
   },
   login: async (payload: LoginPayload): Promise<LoginResponse> =>
-    (await api.post<LoginResponse>('/auth/login', payload)).data,
+    (await api.post<LoginResponse>('/api/auth/login', payload)).data,
 };
 export function getAuthErrorMessage(error: unknown, action: 'login' | 'register') {
   if (!axios.isAxiosError(error)) return 'Something went wrong. Please try again.';
