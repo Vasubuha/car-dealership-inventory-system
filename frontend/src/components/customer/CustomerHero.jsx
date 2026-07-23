@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, CheckCircle2, ShoppingBag, User, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import HeroCarousel from '../landing/Hero/HeroCarousel';
+import HeroCarousel from '../landing/hero/HeroCarousel';
 
 export default function CustomerHero() {
   const { user } = useAuth();

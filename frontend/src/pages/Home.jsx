@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/shared/Navbar';
-import Hero from '../components/landing/Hero/Hero';
+import Hero from '../components/landing/hero/Hero';
 import LiveStockPulse from '../components/landing/Operations/LiveStockPulse';
 import WorkflowJourney from '../components/landing/Workflow/WorkflowJourney';
 import IndiaNetworkMap from '../components/landing/Network/IndiaNetworkMap';
