@@ -6,7 +6,7 @@ import VehicleDetails from '../pages/VehicleDetails';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
 import Unauthorized from '../pages/Unauthorized';
-import Placeholder from '../pages/Placeholder';
+import Inventory from '../pages/Inventory';
 import PurchaseHistoryPage from '../pages/Purchases';
 import AddVehicle from '../pages/admin/AddVehicle';
 import EditVehicle from '../pages/admin/EditVehicle';
@@ -31,12 +31,7 @@ export default function AppRoutes() {
         <Route path="/purchases" element={<PurchaseHistoryPage />} />
         <Route path="/vehicles/add" element={adminPage(<AddVehicle />)} />
         <Route path="/vehicles/:id/edit" element={adminPage(<EditVehicle />)} />
-        <Route
-          path="/inventory"
-          element={adminPage(<Placeholder title="Inventory management" />)}
-        />
-        <Route path="/reports" element={adminPage(<Placeholder title="Reports" />)} />
-        <Route path="/users" element={adminPage(<Placeholder title="Users management" />)} />
+        <Route path="/inventory" element={adminPage(<Inventory />)} />
       </Route>
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />

@@ -1,7 +1,5 @@
-﻿import {
+import {
   CarFront,
-  ClipboardList,
-  FileBarChart,
   LayoutDashboard,
   Menu,
   PlusCircle,
@@ -25,9 +23,6 @@ const admin = [
   { to: '/vehicles', label: 'Vehicles', icon: CarFront },
   { to: '/vehicles/add', label: 'Add vehicle', icon: PlusCircle },
   { to: '/inventory', label: 'Inventory', icon: Warehouse },
-  { to: '/purchases', label: 'Purchases', icon: ClipboardList },
-  { to: '/reports', label: 'Reports', icon: FileBarChart },
-  { to: '/users', label: 'Users', icon: Users },
   { to: '/profile', label: 'Profile', icon: Users },
   { to: '/settings', label: 'Settings', icon: Settings },
 ];

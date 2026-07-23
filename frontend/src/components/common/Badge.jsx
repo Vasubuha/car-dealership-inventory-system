@@ -4,9 +4,11 @@ export default function Badge({ children, tone = 'blue' }) {
     green: 'bg-emerald-50 text-emerald-700',
     amber: 'bg-amber-50 text-amber-700',
     slate: 'bg-slate-100 text-slate-600',
+    red: 'bg-rose-50 text-rose-700',
+    rose: 'bg-rose-50 text-rose-700',
   };
   return (
-    <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${colors[tone]}`}>
+    <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${colors[tone] || colors.slate}`}>
       {children}
     </span>
   );
