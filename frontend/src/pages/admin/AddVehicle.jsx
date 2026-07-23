@@ -1,7 +1,59 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PageContainer from "../../components/layout/PageContainer";
-import Button from "../../components/common/Button";
-import { vehicleService } from "../../services/vehicleService";
-const fields=["make","model","category","price","quantity"];
-export default function AddVehicle(){const [form,setForm]=useState({make:"",model:"",category:"",price:"",quantity:1});const [error,setError]=useState("");const nav=useNavigate();const submit=async e=>{e.preventDefault();try{await vehicleService.createVehicle({...form,price:Number(form.price),quantity:Number(form.quantity)});nav("/vehicles")}catch(err){setError(err.response?.data?.detail??"Unable to create vehicle.")}};return <PageContainer><div className="mx-auto max-w-2xl"><h1 className="text-3xl font-bold text-slate-900">Add vehicle</h1><p className="mt-2 text-slate-500">Add a vehicle to your dealership inventory.</p><form onSubmit={submit} className="mt-8 grid gap-5 rounded-2xl bg-white p-6 shadow-sm sm:grid-cols-2">{fields.map(f=><label key={f} className={f==="category"?"sm:col-span-2":""}><span className="mb-2 block text-sm font-semibold capitalize text-slate-700">{f}</span><input required type={f==="price"||f==="quantity"?"number":"text"} min={f==="quantity"?0:f==="price"?0.01:undefined} step={f==="price"?"0.01":undefined} value={form[f]} onChange={e=>setForm({...form,[f]:e.target.value})}/></label>)}{error&&<p className="sm:col-span-2 text-sm text-rose-600">{error}</p>}<div className="flex justify-end gap-3 sm:col-span-2"><Button type="button" variant="secondary" onClick={()=>nav(-1)}>Cancel</Button><Button type="submit">Add vehicle</Button></div></form></div></PageContainer>}
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PageContainer from '../../components/layout/PageContainer';
+import Button from '../../components/common/Button';
+import { vehicleService } from '../../services/vehicleService';
+const fields = ['make', 'model', 'category', 'price', 'quantity'];
+export default function AddVehicle() {
+  const [form, setForm] = useState({ make: '', model: '', category: '', price: '', quantity: 1 });
+  const [error, setError] = useState('');
+  const nav = useNavigate();
+  const submit = async (e) => {
+    e.preventDefault();
+    try {
+      await vehicleService.createVehicle({
+        ...form,
+        price: Number(form.price),
+        quantity: Number(form.quantity),
+      });
+      nav('/vehicles');
+    } catch (err) {
+      setError(err.response?.data?.detail ?? 'Unable to create vehicle.');
+    }
+  };
+  return (
+    <PageContainer>
+      <div className="mx-auto max-w-2xl">
+        <h1 className="text-3xl font-bold text-slate-900">Add vehicle</h1>
+        <p className="mt-2 text-slate-500">Add a vehicle to your dealership inventory.</p>
+        <form
+          onSubmit={submit}
+          className="mt-8 grid gap-5 rounded-2xl bg-white p-6 shadow-sm sm:grid-cols-2"
+        >
+          {fields.map((f) => (
+            <label key={f} className={f === 'category' ? 'sm:col-span-2' : ''}>
+              <span className="mb-2 block text-sm font-semibold capitalize text-slate-700">
+                {f}
+              </span>
+              <input
+                required
+                type={f === 'price' || f === 'quantity' ? 'number' : 'text'}
+                min={f === 'quantity' ? 0 : f === 'price' ? 0.01 : undefined}
+                step={f === 'price' ? '0.01' : undefined}
+                value={form[f]}
+                onChange={(e) => setForm({ ...form, [f]: e.target.value })}
+              />
+            </label>
+          ))}
+          {error && <p className="sm:col-span-2 text-sm text-rose-600">{error}</p>}
+          <div className="flex justify-end gap-3 sm:col-span-2">
+            <Button type="button" variant="secondary" onClick={() => nav(-1)}>
+              Cancel
+            </Button>
+            <Button type="submit">Add vehicle</Button>
+          </div>
+        </form>
+      </div>
+    </PageContainer>
+  );
+}

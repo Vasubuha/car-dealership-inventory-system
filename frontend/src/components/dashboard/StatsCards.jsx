@@ -1,3 +1,45 @@
-import { CarFront, CircleDollarSign, PackageCheck, TriangleAlert } from "lucide-react";
-import Card from "../common/Card";
-export default function StatsCards({ vehicles }) { const available = vehicles.filter(v => v.quantity > 0).length; const low = vehicles.filter(v => v.quantity > 0 && v.quantity <= 3).length; const sold = 0; const stats = [{ label: "Total vehicles", value: vehicles.length, icon: CarFront, color: "bg-blue-50 text-blue-600" }, { label: "Available vehicles", value: available, icon: PackageCheck, color: "bg-emerald-50 text-emerald-600" }, { label: "Low stock", value: low, icon: TriangleAlert, color: "bg-amber-50 text-amber-600" }, { label: "Total sold", value: sold, icon: CircleDollarSign, color: "bg-violet-50 text-violet-600" }]; return <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map(({label,value,icon:Icon,color}) => <Card key={label} className="p-5"><div className="flex items-start justify-between"><div><p className="text-sm font-medium text-slate-500">{label}</p><p className="mt-3 text-3xl font-bold text-slate-900">{value}</p></div><span className={`rounded-xl p-3 ${color}`}><Icon size={22}/></span></div></Card>)}</div>; }
+import { CarFront, CircleDollarSign, PackageCheck, TriangleAlert } from 'lucide-react';
+import Card from '../common/Card';
+export default function StatsCards({ vehicles }) {
+  const available = vehicles.filter((v) => v.quantity > 0).length;
+  const low = vehicles.filter((v) => v.quantity > 0 && v.quantity <= 3).length;
+  const sold = 0;
+  const stats = [
+    {
+      label: 'Total vehicles',
+      value: vehicles.length,
+      icon: CarFront,
+      color: 'bg-blue-50 text-blue-600',
+    },
+    {
+      label: 'Available vehicles',
+      value: available,
+      icon: PackageCheck,
+      color: 'bg-emerald-50 text-emerald-600',
+    },
+    { label: 'Low stock', value: low, icon: TriangleAlert, color: 'bg-amber-50 text-amber-600' },
+    {
+      label: 'Total sold',
+      value: sold,
+      icon: CircleDollarSign,
+      color: 'bg-violet-50 text-violet-600',
+    },
+  ];
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {stats.map(({ label, value, icon: Icon, color }) => (
+        <Card key={label} className="p-5">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-sm font-medium text-slate-500">{label}</p>
+              <p className="mt-3 text-3xl font-bold text-slate-900">{value}</p>
+            </div>
+            <span className={`rounded-xl p-3 ${color}`}>
+              <Icon size={22} />
+            </span>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}

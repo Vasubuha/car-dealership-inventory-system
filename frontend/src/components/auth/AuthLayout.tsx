@@ -1,3 +1,34 @@
-import type { ReactNode } from 'react'
-import { CarFront } from 'lucide-react'
-export default function AuthLayout({ children, mode }: {children: ReactNode; mode: 'login' | 'register'}) { const login = mode === 'login'; return <main className="relative grid min-h-screen place-items-center overflow-hidden bg-slate-950 px-4 py-10 text-slate-900"><div className="absolute -left-28 -top-28 h-96 w-96 rounded-full bg-cyan-500/25 blur-3xl" /><div className="absolute -bottom-32 -right-28 h-96 w-96 rounded-full bg-blue-600/30 blur-3xl" /><section className="relative w-full max-w-md rounded-3xl border border-white/10 bg-white/95 p-6 shadow-2xl shadow-cyan-950/40 backdrop-blur sm:p-9 dark:bg-slate-900/95 dark:text-slate-100"><header className="mb-8 text-center"><div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 text-white"><CarFront size={24} /></div><p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-600">AutoFlow</p><h1 className="text-2xl font-bold">{login ? 'Welcome back' : 'Create your account'}</h1><p className="mt-2 text-sm text-slate-500">{login ? 'Sign in to manage your inventory.' : 'Get started with your dealership workspace.'}</p></header>{children}</section></main> }
+import type { ReactNode } from 'react';
+import { CarFront } from 'lucide-react';
+export default function AuthLayout({
+  children,
+  mode,
+}: {
+  children: ReactNode;
+  mode: 'login' | 'register';
+}) {
+  const login = mode === 'login';
+  return (
+    <main className="relative grid min-h-screen place-items-center overflow-hidden bg-slate-950 px-4 py-10 text-slate-900">
+      <div className="absolute -left-28 -top-28 h-96 w-96 rounded-full bg-cyan-500/25 blur-3xl" />
+      <div className="absolute -bottom-32 -right-28 h-96 w-96 rounded-full bg-blue-600/30 blur-3xl" />
+      <section className="relative w-full max-w-md rounded-3xl border border-white/10 bg-white/95 p-6 shadow-2xl shadow-cyan-950/40 backdrop-blur sm:p-9 dark:bg-slate-900/95 dark:text-slate-100">
+        <header className="mb-8 text-center">
+          <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 text-white">
+            <CarFront size={24} />
+          </div>
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-600">
+            AutoFlow
+          </p>
+          <h1 className="text-2xl font-bold">{login ? 'Welcome back' : 'Create your account'}</h1>
+          <p className="mt-2 text-sm text-slate-500">
+            {login
+              ? 'Sign in to manage your inventory.'
+              : 'Get started with your dealership workspace.'}
+          </p>
+        </header>
+        {children}
+      </section>
+    </main>
+  );
+}

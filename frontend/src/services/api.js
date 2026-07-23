@@ -1,9 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
-const apiRoot = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api").replace(/\/api\/?$/, "");
-const api = axios.create({ baseURL: apiRoot, headers: { "Content-Type": "application/json" } });
+const apiRoot = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api').replace(
+  /\/api\/?$/,
+  ''
+);
+const api = axios.create({ baseURL: apiRoot, headers: { 'Content-Type': 'application/json' } });
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("dealership.accessToken");
+  const token = localStorage.getItem('dealership.accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });

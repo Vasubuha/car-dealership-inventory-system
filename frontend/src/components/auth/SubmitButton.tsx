@@ -1,3 +1,20 @@
-import type { ReactNode } from 'react'
-import { LoaderCircle } from 'lucide-react'
-export default function SubmitButton({ loading, children }: {loading: boolean; children: ReactNode}) { return <button type="submit" disabled={loading} className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-blue-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/40 disabled:cursor-not-allowed disabled:opacity-60">{loading && <LoaderCircle className="animate-spin" size={17} />}{loading ? 'Please wait…' : children}</button> }
+import type { ReactNode } from 'react';
+import { LoaderCircle } from 'lucide-react';
+export default function SubmitButton({
+  loading,
+  children,
+}: {
+  loading: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="submit"
+      disabled={loading}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-blue-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {loading && <LoaderCircle className="animate-spin" size={17} />}
+      {loading ? 'Please wait…' : children}
+    </button>
+  );
+}

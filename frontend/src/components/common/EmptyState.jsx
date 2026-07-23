@@ -1,2 +1,15 @@
-import { CarFront } from "lucide-react";
-export default function EmptyState({ title = "No vehicles found", message = "Try adjusting your search or filters." }) { return <div className="grid min-h-72 place-items-center rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center"><div><CarFront className="mx-auto mb-3 text-slate-300" size={38}/><h3 className="font-bold text-slate-800">{title}</h3><p className="mt-1 text-sm text-slate-500">{message}</p></div></div>; }
+import { CarFront } from 'lucide-react';
+export default function EmptyState({
+  title = 'No vehicles found',
+  message = 'Try adjusting your search or filters.',
+}) {
+  return (
+    <div className="grid min-h-72 place-items-center rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center">
+      <div>
+        <CarFront className="mx-auto mb-3 text-slate-300" size={38} />
+        <h3 className="font-bold text-slate-800">{title}</h3>
+        <p className="mt-1 text-sm text-slate-500">{message}</p>
+      </div>
+    </div>
+  );
+}

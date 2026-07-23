@@ -1,12 +1,90 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { useAuth } from '../../context/AuthContext'
-import { registerSchema, type RegisterFormValues } from '../../schemas/auth.schema'
-import { getAuthErrorMessage } from '../../services/auth.service'
-import FormMessage from './FormMessage'
-import PasswordInput from './PasswordInput'
-import SubmitButton from './SubmitButton'
-const field = (invalid: boolean) => `w-full rounded-xl border bg-white px-3.5 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 dark:bg-slate-800 ${invalid ? 'border-rose-500' : 'border-slate-200 dark:border-slate-700'}`
-export default function RegisterForm({ onLogin }: {onLogin: () => void}) { const { register: createAccount } = useAuth(); const [serverError, setServerError] = useState<string>(); const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormValues>({ resolver: zodResolver(registerSchema), mode: 'onBlur' }); const submit = async (values: RegisterFormValues) => { setServerError(undefined); try { await createAccount(values); toast.success('Registration successful. Please login to continue.'); onLogin() } catch (error) { setServerError(getAuthErrorMessage(error, 'register')) } }; return <form onSubmit={handleSubmit(submit)} noValidate className="space-y-4"><div><label htmlFor="register-username" className="mb-1.5 block text-sm font-medium">Username</label><input id="register-username" autoComplete="username" placeholder="Choose a username" aria-invalid={Boolean(errors.username)} {...register('username')} className={field(Boolean(errors.username))} /><FormMessage>{errors.username?.message}</FormMessage></div><div><label htmlFor="register-email" className="mb-1.5 block text-sm font-medium">Email address</label><input id="register-email" type="email" autoComplete="email" placeholder="you@example.com" aria-invalid={Boolean(errors.email)} {...register('email')} className={field(Boolean(errors.email))} /><FormMessage>{errors.email?.message}</FormMessage></div><div><label htmlFor="register-password" className="mb-1.5 block text-sm font-medium">Password</label><PasswordInput id="register-password" autoComplete="new-password" placeholder="Create a strong password" aria-invalid={Boolean(errors.password)} hasError={Boolean(errors.password)} {...register('password')} /><FormMessage>{errors.password?.message}</FormMessage></div><FormMessage>{serverError}</FormMessage><SubmitButton loading={isSubmitting}>Register</SubmitButton><p className="text-center text-sm text-slate-500">Already have an account? <button type="button" onClick={onLogin} className="font-semibold text-cyan-600 hover:text-cyan-500">Login</button></p></form> }
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
+import { registerSchema, type RegisterFormValues } from '../../schemas/auth.schema';
+import { getAuthErrorMessage } from '../../services/auth.service';
+import FormMessage from './FormMessage';
+import PasswordInput from './PasswordInput';
+import SubmitButton from './SubmitButton';
+const field = (invalid: boolean) =>
+  `w-full rounded-xl border bg-white px-3.5 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 dark:bg-slate-800 ${invalid ? 'border-rose-500' : 'border-slate-200 dark:border-slate-700'}`;
+export default function RegisterForm({ onLogin }: { onLogin: () => void }) {
+  const { register: createAccount } = useAuth();
+  const [serverError, setServerError] = useState<string>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormValues>({ resolver: zodResolver(registerSchema), mode: 'onBlur' });
+  const submit = async (values: RegisterFormValues) => {
+    setServerError(undefined);
+    try {
+      await createAccount(values);
+      toast.success('Registration successful. Please login to continue.');
+      onLogin();
+    } catch (error) {
+      setServerError(getAuthErrorMessage(error, 'register'));
+    }
+  };
+  return (
+    <form onSubmit={handleSubmit(submit)} noValidate className="space-y-4">
+      <div>
+        <label htmlFor="register-username" className="mb-1.5 block text-sm font-medium">
+          Username
+        </label>
+        <input
+          id="register-username"
+          autoComplete="username"
+          placeholder="Choose a username"
+          aria-invalid={Boolean(errors.username)}
+          {...register('username')}
+          className={field(Boolean(errors.username))}
+        />
+        <FormMessage>{errors.username?.message}</FormMessage>
+      </div>
+      <div>
+        <label htmlFor="register-email" className="mb-1.5 block text-sm font-medium">
+          Email address
+        </label>
+        <input
+          id="register-email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          aria-invalid={Boolean(errors.email)}
+          {...register('email')}
+          className={field(Boolean(errors.email))}
+        />
+        <FormMessage>{errors.email?.message}</FormMessage>
+      </div>
+      <div>
+        <label htmlFor="register-password" className="mb-1.5 block text-sm font-medium">
+          Password
+        </label>
+        <PasswordInput
+          id="register-password"
+          autoComplete="new-password"
+          placeholder="Create a strong password"
+          aria-invalid={Boolean(errors.password)}
+          hasError={Boolean(errors.password)}
+          {...register('password')}
+        />
+        <FormMessage>{errors.password?.message}</FormMessage>
+      </div>
+      <FormMessage>{serverError}</FormMessage>
+      <SubmitButton loading={isSubmitting}>Register</SubmitButton>
+      <p className="text-center text-sm text-slate-500">
+        Already have an account?{' '}
+        <button
+          type="button"
+          onClick={onLogin}
+          className="font-semibold text-cyan-600 hover:text-cyan-500"
+        >
+          Login
+        </button>
+      </p>
+    </form>
+  );
+}
