@@ -26,18 +26,34 @@ else:
 
 connect_args = {"check_same_thread": False} if "sqlite" in db_url else {}
 
+def init_db() -> None:
+    from app.models.user import User
+    from app.models.vehicle import Vehicle
+    from app.models.purchase import Purchase
+    Base.metadata.create_all(bind=engine)
+
 try:
     engine = create_engine(db_url, pool_pre_ping=True, connect_args=connect_args)
-    Base.metadata.create_all(bind=engine)
+    init_db()
 except Exception as err:
     logging.warning(f"Database connection failed for {db_url}: {err}. Falling back to SQLite.")
     db_url = "sqlite:///./dealership.db"
     engine = create_engine(db_url, pool_pre_ping=True, connect_args={"check_same_thread": False})
-    Base.metadata.create_all(bind=engine)
+    init_db()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+_db_initialized = False
+
 def get_db() -> Generator[Session, None, None]:
+    global _db_initialized
+    if not _db_initialized:
+        try:
+            init_db()
+            _db_initialized = True
+        except Exception as err:
+            logging.warning(f"Failed to ensure tables in get_db: {err}")
+
     database_session = SessionLocal()
     try:
         yield database_session
