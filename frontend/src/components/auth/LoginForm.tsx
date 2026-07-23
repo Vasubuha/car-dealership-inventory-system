@@ -26,7 +26,8 @@ export default function LoginForm({ onRegister }: { onRegister: () => void }) {
     setServerError(undefined);
     try {
       const user = await login(values);
-      navigate('/dashboard', {
+      const target = user?.role === 'admin' ? '/dashboard' : '/home';
+      navigate(target, {
         replace: true,
       });
     } catch (error) {
