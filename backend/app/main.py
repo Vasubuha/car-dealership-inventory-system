@@ -33,3 +33,9 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(vehicle_router)
 app.include_router(inventory_router)
 app.include_router(purchases_router)
+
+
+@app.get("/")
+@app.head("/")
+def health_check():
+    return {"status": "ok", "message": "Car Dealership Inventory System API is live"}

@@ -9,6 +9,11 @@ class Base(DeclarativeBase):
 
 raw_url = os.getenv("DATABASE_URL", "").strip()
 
+# Strip accidental variable name/tab prefixes (e.g. "DATABASE_URL postgresql://...")
+if "postgres" in raw_url:
+    idx = raw_url.find("postgres")
+    raw_url = raw_url[idx:]
+
 # On cloud servers like Render, localhost/127.0.0.1 is invalid unless local PG is running. Fallback to SQLite.
 if not raw_url or "localhost" in raw_url or "127.0.0.1" in raw_url:
     db_url = "sqlite:///./dealership.db"
