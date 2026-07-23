@@ -36,3 +36,9 @@ class PaginationMeta(BaseModel):
 class PaginatedPurchaseResponse(BaseModel):
     items: list[PurchaseHistoryResponse]
     meta: PaginationMeta
+
+class RevenueSummaryResponse(BaseModel):
+    total_revenue: float
+    total_purchases: int
+    total_units_sold: int
+

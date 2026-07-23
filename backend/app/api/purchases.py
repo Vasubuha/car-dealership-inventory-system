@@ -4,12 +4,17 @@ from math import ceil
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.auth.security import get_current_user
+from app.auth.security import get_current_user, require_admin
 from app.database.session import get_db
 from app.models.user import User
 from app.repositories.purchase_repository import PurchaseRepository
 from app.repositories.vehicle_repository import VehicleRepository
-from app.schemas.purchase import PaginatedPurchaseResponse, PaginationMeta, PurchaseHistoryResponse
+from app.schemas.purchase import (
+    PaginatedPurchaseResponse,
+    PaginationMeta,
+    PurchaseHistoryResponse,
+    RevenueSummaryResponse,
+)
 from app.services.purchase_service import PurchaseService
 
 router = APIRouter(prefix="/api/v1/purchases", tags=["purchases"])
@@ -21,6 +26,15 @@ def get_purchase_service(database_session: Session = Depends(get_db)) -> Purchas
         VehicleRepository(database_session),
         PurchaseRepository(database_session),
     )
+
+
+@router.get("/summary", response_model=RevenueSummaryResponse)
+def get_revenue_summary(
+    _: User = Depends(require_admin),
+    purchase_service: PurchaseService = Depends(get_purchase_service),
+) -> RevenueSummaryResponse:
+    summary = purchase_service.get_summary()
+    return RevenueSummaryResponse(**summary)
 
 
 @router.get("/my-history", response_model=PaginatedPurchaseResponse)
@@ -57,3 +71,4 @@ def get_my_purchase_history(
             total_pages=ceil(total / page_size) if total else 0,
         ),
     )
+

@@ -1,11 +1,17 @@
 export default function FilterBar({ filters, categories, onChange }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
       <select value={filters.category} onChange={(e) => onChange('category', e.target.value)}>
         <option value="">All categories</option>
         {categories.map((c) => (
           <option key={c}>{c}</option>
         ))}
+      </select>
+      <select value={filters.stock || ''} onChange={(e) => onChange('stock', e.target.value)}>
+        <option value="">All stock levels</option>
+        <option value="in_stock">In Stock (&gt; 5)</option>
+        <option value="low_stock">Low Stock (1–5)</option>
+        <option value="out_of_stock">Out of Stock (0)</option>
       </select>
       <input
         value={filters.min}

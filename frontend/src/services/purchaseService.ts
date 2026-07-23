@@ -22,4 +22,15 @@ export const purchaseService = {
     });
     return response.data;
   },
+
+  /**
+   * Fetch revenue summary (admin only).
+   */
+  getRevenueSummary: async (): Promise<{ total_revenue: number; total_purchases: number; total_units_sold: number }> => {
+    const response = await api.get<{ total_revenue: number; total_purchases: number; total_units_sold: number }>(
+      `${BASE}/summary`
+    );
+    return response.data;
+  },
 };
+

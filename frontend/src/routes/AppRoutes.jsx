@@ -4,7 +4,6 @@ import Dashboard from '../pages/Dashboard';
 import Vehicles from '../pages/Vehicles';
 import VehicleDetails from '../pages/VehicleDetails';
 import Profile from '../pages/Profile';
-import Settings from '../pages/Settings';
 import Unauthorized from '../pages/Unauthorized';
 import Inventory from '../pages/Inventory';
 import PurchaseHistoryPage from '../pages/Purchases';
@@ -27,7 +26,6 @@ export default function AppRoutes() {
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/vehicles/:id" element={<VehicleDetails />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
         <Route path="/purchases" element={<PurchaseHistoryPage />} />
         <Route path="/vehicles/add" element={adminPage(<AddVehicle />)} />
         <Route path="/vehicles/:id/edit" element={adminPage(<EditVehicle />)} />

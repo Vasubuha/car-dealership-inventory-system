@@ -165,6 +165,31 @@ def test_history_allowed_for_admin(client: TestClient, database_session) -> None
     assert response.json()["meta"]["total"] == 0
 
 
+def test_revenue_summary_requires_admin(client: TestClient) -> None:
+    """Non-admin user cannot access /summary."""
+    headers = authenticated_headers(client, "customer-rev@example.com")
+    response = client.get("/api/v1/purchases/summary", headers=headers)
+    assert response.status_code == 403
+
+
+def test_revenue_summary_for_admin(client: TestClient, database_session) -> None:
+    """Admin user can fetch total revenue summary."""
+    admin_headers = authenticated_headers(client, "admin-rev@example.com")
+    make_admin(database_session, "admin-rev@example.com")
+    user_headers = authenticated_headers(client, "buyer-rev@example.com")
+
+    vehicle = create_vehicle(client, admin_headers, price=50000, quantity=10)
+    do_purchase(client, user_headers, vehicle["id"], quantity=2)
+
+    response = client.get("/api/v1/purchases/summary", headers=admin_headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_revenue"] >= 100000.0
+    assert data["total_units_sold"] >= 2
+    assert data["total_purchases"] >= 1
+
+
+
 # ---------------------------------------------------------------------------
 # Error paths (purchase endpoint, indirectly validates recording guard)
 # ---------------------------------------------------------------------------

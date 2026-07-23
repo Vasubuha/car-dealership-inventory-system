@@ -1,10 +1,12 @@
-import { Download, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
+
 export default function DashboardHeader({ count }) {
   const { user } = useAuth();
   const admin = user?.role === 'admin';
+
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
@@ -18,10 +20,6 @@ export default function DashboardHeader({ count }) {
       </div>
       {admin && (
         <div className="flex gap-3">
-          <Button variant="secondary">
-            <Download size={17} />
-            Download report
-          </Button>
           <Link to="/vehicles/add">
             <Button>
               <Plus size={17} />

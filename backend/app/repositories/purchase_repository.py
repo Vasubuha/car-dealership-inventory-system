@@ -52,3 +52,13 @@ class PurchaseRepository:
             )
         )
         return purchases, total
+
+    def get_revenue_summary(self) -> tuple[object, int, int]:
+        stmt = select(
+            func.coalesce(func.sum(Purchase.total_price), 0),
+            func.coalesce(func.sum(Purchase.quantity), 0),
+            func.count(Purchase.id),
+        )
+        result = self.database_session.execute(stmt).one()
+        return result[0], int(result[1]), int(result[2])
+

@@ -1,16 +1,30 @@
-import { AlertCircle, ChevronLeft, ChevronRight, Receipt, RefreshCw, Search, ShoppingBag, X } from 'lucide-react';
+import {
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+  Receipt,
+  RefreshCw,
+  Search,
+  ShoppingBag,
+  X,
+} from 'lucide-react';
 import PageContainer from '../components/layout/PageContainer';
 import { usePurchaseHistory } from '../hooks/usePurchaseHistory';
 import type { Purchase, PaginationMeta } from '../types/purchase';
+import { formatCurrency } from '../utils/formatCurrency';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 0 }).format(value);
-}
+// Using shared `formatCurrency` util from `src/utils/formatCurrency.js`
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(iso).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 // ─── Sub-components ─────────────────────────────────────────────────────────
@@ -76,7 +90,10 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-3" aria-busy="true" aria-label="Loading purchase history">
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="animate-pulse rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+        <div
+          key={i}
+          className="animate-pulse rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"
+        >
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-2">
               <div className="h-4 w-40 rounded bg-slate-200" />
@@ -147,17 +164,16 @@ function PurchaseHistoryTable({ purchases }: { purchases: Purchase[] }) {
         </thead>
         <tbody className="divide-y divide-slate-50">
           {purchases.map((p) => (
-            <tr
-              key={p.purchase_id}
-              className="group transition-colors hover:bg-blue-50/40"
-            >
+            <tr key={p.purchase_id} className="group transition-colors hover:bg-blue-50/40">
               <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
                   <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-600">
                     <Receipt size={16} />
                   </span>
                   <div>
-                    <p className="font-semibold text-slate-900">{p.make} {p.model}</p>
+                    <p className="font-semibold text-slate-900">
+                      {p.make} {p.model}
+                    </p>
                     <p className="text-xs text-slate-400">ID: {p.vehicle_id.slice(0, 8)}…</p>
                   </div>
                 </div>
@@ -168,8 +184,12 @@ function PurchaseHistoryTable({ purchases }: { purchases: Purchase[] }) {
                 </span>
               </td>
               <td className="px-5 py-4 text-center font-medium text-slate-700">{p.quantity}</td>
-              <td className="px-5 py-4 text-right text-slate-700">{formatCurrency(p.purchase_price)}</td>
-              <td className="px-5 py-4 text-right font-bold text-slate-900">{formatCurrency(p.total_price)}</td>
+              <td className="px-5 py-4 text-right text-slate-700">
+                {formatCurrency(p.purchase_price)}
+              </td>
+              <td className="px-5 py-4 text-right font-bold text-slate-900">
+                {formatCurrency(p.total_price)}
+              </td>
               <td className="px-5 py-4 text-right text-slate-500">{formatDate(p.purchase_date)}</td>
             </tr>
           ))}
@@ -189,7 +209,9 @@ function PurchaseHistoryCard({ purchase: p }: { purchase: Purchase }) {
             <Receipt size={18} />
           </span>
           <div>
-            <p className="font-bold text-slate-900">{p.make} {p.model}</p>
+            <p className="font-bold text-slate-900">
+              {p.make} {p.model}
+            </p>
             <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">
               {p.category}
             </span>
@@ -257,8 +279,19 @@ function Pagination({
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function PurchaseHistoryPage() {
-  const { purchases, meta, loading, error, page, make, model, setPage, setMake, setModel, refresh } =
-    usePurchaseHistory(10);
+  const {
+    purchases,
+    meta,
+    loading,
+    error,
+    page,
+    make,
+    model,
+    setPage,
+    setMake,
+    setModel,
+    refresh,
+  } = usePurchaseHistory(10);
 
   const hasFilters = Boolean(make || model);
 

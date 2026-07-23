@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   Menu,
   PlusCircle,
-  Settings,
   ShoppingBag,
   Users,
   Warehouse,
@@ -16,7 +15,6 @@ const customer = [
   { to: '/vehicles', label: 'Vehicles', icon: CarFront },
   { to: '/purchases', label: 'My purchases', icon: ShoppingBag },
   { to: '/profile', label: 'Profile', icon: Users },
-  { to: '/settings', label: 'Settings', icon: Settings },
 ];
 const admin = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -24,7 +22,6 @@ const admin = [
   { to: '/vehicles/add', label: 'Add vehicle', icon: PlusCircle },
   { to: '/inventory', label: 'Inventory', icon: Warehouse },
   { to: '/profile', label: 'Profile', icon: Users },
-  { to: '/settings', label: 'Settings', icon: Settings },
 ];
 export default function Sidebar({ open, onClose }) {
   const { user } = useAuth();

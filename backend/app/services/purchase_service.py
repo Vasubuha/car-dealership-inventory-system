@@ -35,3 +35,12 @@ class PurchaseService:
 
     def get_history(self, customer: User, *, page: int, page_size: int, make: str | None, model: str | None):
         return self.purchase_repository.get_customer_purchase_history(customer.id, page=page, page_size=page_size, make=make, model=model)
+
+    def get_summary(self) -> dict[str, object]:
+        total_revenue, total_units, total_count = self.purchase_repository.get_revenue_summary()
+        return {
+            "total_revenue": float(total_revenue or 0),
+            "total_purchases": total_count,
+            "total_units_sold": total_units,
+        }
+

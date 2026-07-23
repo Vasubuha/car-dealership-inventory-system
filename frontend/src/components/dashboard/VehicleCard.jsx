@@ -9,6 +9,15 @@ export default function VehicleCard({ vehicle, onPurchase, onDelete, onRestock }
   const { user } = useAuth();
   const admin = user?.role === 'admin';
   const inStock = vehicle.quantity > 0;
+  const isLowStock = vehicle.quantity >= 1 && vehicle.quantity <= 5;
+  const stockBadgeTone = vehicle.quantity === 0 ? 'slate' : isLowStock ? 'amber' : 'green';
+  const stockBadgeText =
+    vehicle.quantity === 0
+      ? 'Sold out'
+      : isLowStock
+        ? `${vehicle.quantity} left (Low Stock)`
+        : `${vehicle.quantity} in stock`;
+
   return (
     <Card className="group overflow-hidden transition duration-200 hover:-translate-y-1 hover:shadow-lg">
       <div className="relative h-44 overflow-hidden bg-gradient-to-br from-blue-950 via-blue-800 to-slate-800 p-5">
@@ -30,8 +39,8 @@ export default function VehicleCard({ vehicle, onPurchase, onDelete, onRestock }
             </h3>
             <p className="mt-1 text-xl font-bold text-slate-900">{formatCurrency(vehicle.price)}</p>
           </div>
-          <Badge tone={inStock ? 'green' : 'slate'}>
-            {inStock ? `${vehicle.quantity} in stock` : 'Sold out'}
+          <Badge tone={stockBadgeTone}>
+            {stockBadgeText}
           </Badge>
         </div>
         <div className="mt-5 grid grid-cols-2 gap-2">
