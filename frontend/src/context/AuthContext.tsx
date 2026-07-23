@@ -1,4 +1,5 @@
-﻿import {
+import { useQueryClient } from '@tanstack/react-query';
+import {
   createContext,
   useCallback,
   useContext,
@@ -9,6 +10,7 @@
 } from 'react';
 import { authService } from '../services/auth.service';
 import type { AuthContextValue, AuthUser, LoginPayload, RegisterPayload } from '../types/auth';
+import AuthModal from '../components/auth/AuthModal';
 
 const TOKEN_KEY = 'dealership.accessToken';
 const REFRESH_TOKEN_KEY = 'dealership.refreshToken';
@@ -32,6 +34,12 @@ function userFromToken(token: string): AuthUser | null {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     const storedToken = localStorage.getItem(TOKEN_KEY);
     if (!storedToken) return;
@@ -39,6 +47,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedUser = localStorage.getItem(USER_KEY);
     setUser(storedUser ? JSON.parse(storedUser) : userFromToken(storedToken));
   }, []);
+
+  const openLogin = useCallback((action?: () => void) => {
+    if (action) setPendingAction(() => action);
+    setAuthModalTab('login');
+    setIsAuthModalOpen(true);
+  }, []);
+
+  const openRegister = useCallback((action?: () => void) => {
+    if (action) setPendingAction(() => action);
+    setAuthModalTab('register');
+    setIsAuthModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsAuthModalOpen(false);
+    setPendingAction(null);
+  }, []);
+
   const login = useCallback(async (payload: LoginPayload) => {
     const response = await authService.login(payload);
     const nextUser = response.user ??
@@ -48,23 +74,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(USER_KEY, JSON.stringify(nextUser));
     setToken(response.access_token);
     setUser(nextUser);
+    
+    setIsAuthModalOpen(false);
+    if (pendingAction) {
+      const action = pendingAction;
+      setPendingAction(null);
+      setTimeout(() => action(), 100);
+    }
     return nextUser;
-  }, []);
+  }, [pendingAction]);
+
   const register = useCallback(async (payload: RegisterPayload) => {
     await authService.register(payload);
   }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     setToken(null);
     setUser(null);
-  }, []);
+    queryClient.clear();
+  }, [queryClient]);
+
   const value = useMemo(
-    () => ({ user, token, isAuthenticated: Boolean(token), login, register, logout }),
-    [user, token, login, register, logout]
+    () => ({
+      user,
+      token,
+      isAuthenticated: Boolean(token),
+      isAuthModalOpen,
+      authModalTab,
+      login,
+      register,
+      logout,
+      openLogin,
+      openRegister,
+      closeModal,
+    }),
+    [user, token, isAuthModalOpen, authModalTab, login, register, logout, openLogin, openRegister, closeModal]
   );
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={closeModal}
+        initialTab={authModalTab}
+      />
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {

@@ -1,5 +1,6 @@
 import { Car, BookOpen, Mail, Phone, MapPin, Globe, Shield, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 
 function GithubIcon(props) {
   return (
@@ -10,6 +11,7 @@ function GithubIcon(props) {
 }
 
 export default function Footer() {
+  const { openLogin, openRegister } = useAuth();
   return (
     <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-900 pt-16 pb-12 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -104,8 +106,8 @@ export default function Footer() {
             © {new Date().getFullYear()} Autovance Motors OS Inc. All rights reserved.
           </div>
           <div className="flex items-center gap-6">
-            <Link to="/login" className="hover:text-slate-300 transition-colors">Sign In</Link>
-            <Link to="/register" className="hover:text-slate-300 transition-colors">Register</Link>
+            <button onClick={() => openLogin()} className="hover:text-slate-300 transition-colors">Sign In</button>
+            <button onClick={() => openRegister()} className="hover:text-slate-300 transition-colors">Register</button>
             <Link to="/dashboard" className="hover:text-slate-300 transition-colors">Dealership Admin</Link>
           </div>
         </div>

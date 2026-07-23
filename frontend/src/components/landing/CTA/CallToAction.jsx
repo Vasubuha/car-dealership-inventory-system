@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function CallToAction() {
-  const navigate = useNavigate();
+  const { openLogin, openRegister } = useAuth();
 
   return (
     <section className="py-20 bg-white text-slate-900 overflow-hidden">
@@ -29,7 +29,7 @@ export default function CallToAction() {
 
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <button
-                onClick={() => navigate('/register')}
+                onClick={() => openRegister()}
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-sm font-extrabold text-blue-900 bg-white hover:bg-slate-100 shadow-xl shadow-blue-950/20 active:scale-[0.98] transition-all duration-200"
               >
                 <span>Start Free Dealership Trial</span>
@@ -37,7 +37,7 @@ export default function CallToAction() {
               </button>
 
               <button
-                onClick={() => navigate('/login')}
+                onClick={() => openLogin()}
                 className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-white/20 border border-white/30 backdrop-blur-md transition-colors"
               >
                 <span>Sign In to Existing Portal</span>

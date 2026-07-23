@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
 import { Play, ArrowRight, Sparkles } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function HeroButtons({ onGetStarted, onViewDemo }) {
-  const navigate = useNavigate();
+  const { openLogin } = useAuth();
 
   const handlePrimaryClick = () => {
     if (onGetStarted) {
       onGetStarted();
     } else {
-      navigate('/login');
+      openLogin();
     }
   };
 

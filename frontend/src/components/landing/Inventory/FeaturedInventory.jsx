@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Eye, Fuel, Gauge, Calendar, ShieldCheck, ArrowRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import QuickViewModal from './QuickViewModal';
+import { useAuth } from '../../../context/AuthContext';
+import { vehicleService } from '../../../services/vehicleService';
+import { QUERY_KEYS } from '../../../constants/queryKeys';
 
 export default function FeaturedInventory({
   badge = 'Live Stock Inventory',
@@ -9,13 +13,19 @@ export default function FeaturedInventory({
   subtitle = 'Inspect current vehicle stock available for immediate acquisition across Indian dealer networks.',
   mode = 'public',
 }) {
+  const { isAuthenticated, openLogin } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [wishlist, setWishlist] = useState([]);
   const [activeModalVehicle, setActiveModalVehicle] = useState(null);
 
+  const { data: dbVehicles } = useQuery({
+    queryKey: QUERY_KEYS.vehicles,
+    queryFn: () => vehicleService.getVehicles(),
+  });
+
   const inventoryData = [
     {
-      id: 'INV-101',
+      id: 'c3a07a12-88f2-4b2a-874f-9011986fa801',
       vin: 'MH-04-2024-901',
       brand: 'BMW',
       model: 'M4 Competition Coupé',
@@ -32,7 +42,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-emerald-600',
     },
     {
-      id: 'INV-102',
+      id: 'd4b18b23-99f3-4c3b-985f-0122097fa802',
       vin: 'KA-01-2024-442',
       brand: 'Mercedes-Benz',
       model: 'E-Class LWB E350d',
@@ -49,7 +59,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-emerald-600',
     },
     {
-      id: 'INV-103',
+      id: 'e5c29c34-00a4-4d4c-a960-1233108fa803',
       vin: 'DL-03-2024-118',
       brand: 'Porsche',
       model: '911 Carrera GTS',
@@ -66,7 +76,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-amber-600',
     },
     {
-      id: 'INV-104',
+      id: 'f6d30d45-11b5-4e5d-b071-2344219fa804',
       vin: 'MH-02-2024-774',
       brand: 'Tata',
       model: 'Harrier Fearless+ Dark',
@@ -83,7 +93,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-emerald-600',
     },
     {
-      id: 'INV-105',
+      id: 'a7e41e56-22c6-4f6e-c182-3455320fa805',
       vin: 'HR-26-2024-302',
       brand: 'Mahindra',
       model: 'XUV700 AX7 Luxury AWD',
@@ -100,7 +110,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-emerald-600',
     },
     {
-      id: 'INV-106',
+      id: 'b8f52f67-33d7-407f-d293-4566431fa806',
       vin: 'TN-09-2024-551',
       brand: 'Hyundai',
       model: 'Ioniq 5 EV AWD',
@@ -117,7 +127,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-emerald-600',
     },
     {
-      id: 'INV-107',
+      id: 'c9063078-44e8-4180-e304-5677542fa807',
       vin: 'GJ-01-2024-912',
       brand: 'Skoda',
       model: 'Slavia 1.5 TSI Monte Carlo',
@@ -134,7 +144,7 @@ export default function FeaturedInventory({
       tagColor: 'bg-emerald-600',
     },
     {
-      id: 'INV-108',
+      id: 'd0174189-55f9-4291-f415-6788653fa808',
       vin: 'AP-16-2024-209',
       brand: 'Toyota',
       model: 'Hilux 4x4 High',
@@ -152,9 +162,29 @@ export default function FeaturedInventory({
     },
   ];
 
+  const activeInventory = dbVehicles && dbVehicles.length > 0
+    ? dbVehicles.map((v) => ({
+        id: String(v.id),
+        vin: `VIN-${v.make.toUpperCase().slice(0, 2)}-${String(v.id).slice(0, 8).toUpperCase()}`,
+        brand: v.make,
+        model: v.model,
+        category: v.category || 'Sedan',
+        year: 2024,
+        fuel: 'Hybrid / Gasoline',
+        transmission: 'Automatic',
+        mileage: 'Verified Stock',
+        price: `₹${(Number(v.price) / 100000).toFixed(1)} Lakh`,
+        priceNum: Number(v.price) / 100000,
+        status: v.quantity > 0 ? 'In Stock' : 'Out of Stock',
+        location: 'Main Marketplace Hub',
+        image: v.image_url || 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+        tagColor: v.quantity > 0 ? 'bg-emerald-600' : 'bg-rose-600',
+      }))
+    : inventoryData;
+
   const categories = ['All', 'SUV', 'Sedan', 'Luxury', 'Sports', 'Electric', 'Pickup'];
 
-  const filteredInventory = inventoryData.filter((item) => {
+  const filteredInventory = activeInventory.filter((item) => {
     if (selectedCategory === 'All') return true;
     return item.category === selectedCategory;
   });
@@ -231,7 +261,13 @@ export default function FeaturedInventory({
                   
                   {/* Wishlist Button */}
                   <button
-                    onClick={() => toggleWishlist(item.id)}
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        openLogin(() => toggleWishlist(item.id));
+                      } else {
+                        toggleWishlist(item.id);
+                      }
+                    }}
                     className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-md border border-white/50 text-slate-600 hover:text-rose-600 transition-colors shadow-sm"
                   >
                     <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-600 text-rose-600' : ''}`} />

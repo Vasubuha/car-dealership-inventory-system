@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Sparkles, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function PricingSection() {
   const [annual, setAnnual] = useState(true);
-  const navigate = useNavigate();
+  const { openRegister } = useAuth();
 
   const plans = [
     {
@@ -164,7 +164,7 @@ export default function PricingSection() {
 
               {/* Action CTA */}
               <button
-                onClick={() => navigate('/register')}
+                onClick={() => openRegister()}
                 className={`w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl text-xs font-bold transition-all ${
                   p.highlight
                     ? 'bg-blue-500 hover:bg-blue-400 text-white shadow-lg shadow-blue-500/40'

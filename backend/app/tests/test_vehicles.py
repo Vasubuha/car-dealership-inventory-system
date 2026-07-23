@@ -56,9 +56,10 @@ def test_create_vehicle_invalid_data(client: TestClient) -> None:
 
 def test_list_all_vehicles_and_empty_list(client: TestClient) -> None:
     headers = authenticated_headers(client)
-    assert client.get("/api/v1/vehicles", headers=headers).json() == []
+    assert client.get("/api/v1/vehicles").status_code == 200
+    assert client.get("/api/v1/vehicles").json() == []
     create_vehicle(client, headers)
-    assert len(client.get("/api/v1/vehicles", headers=headers).json()) == 1
+    assert len(client.get("/api/v1/vehicles").json()) == 1
 
 
 def test_update_vehicle_and_partial_update(client: TestClient) -> None:

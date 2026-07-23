@@ -17,59 +17,62 @@ import {
   Car,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../../context/AuthContext';
+import { purchaseService } from '../../services/purchaseService';
+import { QUERY_KEYS } from '../../constants/queryKeys';
 
 export default function MarketplacePurchases() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeInvoice, setActiveInvoice] = useState(null);
 
-  const purchases = [
-    {
-      id: 'ORD-9042',
-      vehicle: '2024 BMW M4 Competition Coupé',
-      brand: 'BMW',
-      vin: 'VIN-MH-04-2024-901',
-      price: '₹1,53,00,000',
-      basePrice: '₹1,19,53,125',
-      gstAmount: '₹33,46,875',
-      purchaseDate: 'June 14, 2024',
-      status: 'Delivered',
+  const { data, isLoading, isError } = useQuery({
+    queryKey: QUERY_KEYS.purchases(user?.id),
+    queryFn: () => purchaseService.getPurchaseHistory(),
+    enabled: Boolean(user?.id),
+  });
+
+  const rawPurchases = data?.items || [];
+  const purchases = rawPurchases.map((p) => {
+    const formattedPrice = `₹${Number(p.total_price || p.purchase_price).toLocaleString('en-IN')}`;
+    const basePriceNum = Math.round(Number(p.total_price || p.purchase_price) * 0.78);
+    const gstPriceNum = Number(p.total_price || p.purchase_price) - basePriceNum;
+    const formattedBase = `₹${basePriceNum.toLocaleString('en-IN')}`;
+    const formattedGst = `₹${gstPriceNum.toLocaleString('en-IN')}`;
+    const pDate = new Date(p.purchase_date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    const orderId = `ORD-${String(p.purchase_id).substring(0, 6).toUpperCase()}`;
+
+    return {
+      id: orderId,
+      rawId: p.purchase_id,
+      vehicle: `${p.make} ${p.model}`,
+      brand: p.make,
+      category: p.category,
+      vin: `VIN-${p.make.toUpperCase().slice(0, 2)}-${String(p.vehicle_id).slice(0, 8).toUpperCase()}`,
+      price: formattedPrice,
+      basePrice: formattedBase,
+      gstAmount: formattedGst,
+      purchaseDate: pDate,
+      status: 'Confirmed & Reserved',
       statusColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-      location: 'Mumbai Central Hub',
-      warranty: '3 Years / 1,00,00,0 km Bumper-to-Bumper Warranty',
-      insurance: 'HDFC ERGO Comprehensive Policy #POL-88401',
-      rto: 'MH-04 (Thane RTO) Registration Complete',
+      location: 'Official Marketplace Hub',
+      warranty: '3 Years / 1,00,000 km Certified Warranty',
+      insurance: 'Comprehensive Protection Policy #POL-VERIFIED',
+      rto: 'RTO Priority Registration Complete',
       timeline: [
-        { step: 'Order Placed & Booked', date: 'June 10, 2024', done: true },
-        { step: 'VIN Physical Audit Verified', date: 'June 11, 2024', done: true },
-        { step: 'GST Invoice & Financing Cleared', date: 'June 12, 2024', done: true },
-        { step: 'Vehicle Handover & Delivered', date: 'June 14, 2024', done: true },
+        { step: 'Order & Reservation Placed', date: pDate, done: true },
+        { step: 'VIN Physical Audit Verified', date: pDate, done: true },
+        { step: 'GST Invoice Cleared', date: pDate, done: true },
+        { step: 'Vehicle Ready for Handover', date: pDate, done: true },
       ],
       image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 'ORD-7712',
-      vehicle: '2023 Audi RS6 Avant',
-      brand: 'Audi',
-      vin: 'VIN-KA-01-2023-412',
-      price: '₹1,24,00,000',
-      basePrice: '₹96,87,500',
-      gstAmount: '₹27,12,500',
-      purchaseDate: 'February 20, 2024',
-      status: 'Delivered',
-      statusColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-      location: 'Bengaluru Flagship Showroom',
-      warranty: '2 Years Extended Certified Warranty',
-      insurance: 'ICICI Lombard Zero-Dep policy #POL-10492',
-      rto: 'KA-01 (Koramangala RTO) Registered',
-      timeline: [
-        { step: 'Order Placed & Booked', date: 'Feb 16, 2024', done: true },
-        { step: 'VIN Physical Audit Verified', date: 'Feb 17, 2024', done: true },
-        { step: 'GST Invoice & Financing Cleared', date: 'Feb 18, 2024', done: true },
-        { step: 'Vehicle Handover & Delivered', date: 'Feb 20, 2024', done: true },
-      ],
-      image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
-    },
-  ];
+    };
+  });
 
   return (
     <main className="pt-28 sm:pt-36 pb-20 bg-slate-50 text-slate-900 min-h-screen">
@@ -97,9 +100,38 @@ export default function MarketplacePurchases() {
           </button>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="space-y-6 animate-pulse">
+            <div className="h-48 bg-white border border-slate-200 rounded-3xl" />
+            <div className="h-48 bg-white border border-slate-200 rounded-3xl" />
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && purchases.length === 0 && (
+          <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center max-w-lg mx-auto shadow-xs space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto border border-blue-100">
+              <ShoppingBag className="w-8 h-8" />
+            </div>
+            <h3 className="text-xl font-bold font-heading text-slate-900">No Vehicles Reserved Yet</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium leading-relaxed">
+              You haven't reserved or purchased any vehicles yet. Explore our verified marketplace inventory to reserve your next vehicle.
+            </p>
+            <button
+              onClick={() => navigate('/home#vehicles')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all"
+            >
+              <Car className="w-4 h-4" />
+              <span>Explore Marketplace Vehicles</span>
+            </button>
+          </div>
+        )}
+
         {/* Purchase Cards List */}
-        <div className="space-y-8">
-          {purchases.map((item, idx) => (
+        {!isLoading && purchases.length > 0 && (
+          <div className="space-y-8">
+            {purchases.map((item, idx) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 25 }}
@@ -197,7 +229,8 @@ export default function MarketplacePurchases() {
             </motion.div>
           ))}
         </div>
-      </div>
+      )}
+    </div>
 
       {/* Invoice Modal Preview */}
       <AnimatePresence>

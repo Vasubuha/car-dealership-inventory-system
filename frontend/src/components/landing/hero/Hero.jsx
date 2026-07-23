@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 import HeroCarousel from './HeroCarousel';
 
 export default function Hero() {
-  const navigate = useNavigate();
+  const { openLogin } = useAuth();
 
   return (
     <section className="relative pt-28 sm:pt-36 pb-16 lg:pb-24 bg-white overflow-hidden text-slate-900">
@@ -73,7 +73,7 @@ export default function Hero() {
               </button>
 
               <button
-                onClick={() => navigate('/login')}
+                onClick={() => openLogin()}
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"
               >
                 <span>Dealership Login</span>

@@ -17,13 +17,10 @@ import CallToAction from '../components/landing/CTA/CallToAction';
 import Footer from '../components/shared/Footer';
 
 export default function Home() {
-  const [searchParams] = useSearchParams();
-  const autoAuth = Boolean(searchParams.get('auth'));
-
   return (
     <main className="bg-white min-h-screen font-sans text-slate-900 selection:bg-blue-600 selection:text-white">
       {/* 1. Glass Header */}
-      <Navbar autoOpenAuth={autoAuth} />
+      <Navbar mode="guest" />
 
       {/* 2. Dynamic Parallax Hero */}
       <Hero />

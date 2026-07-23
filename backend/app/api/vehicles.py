@@ -24,12 +24,12 @@ def create_vehicle(vehicle_create: VehicleCreate, _: User = Depends(get_current_
 
 
 @router.get("/search", response_model=list[VehicleResponse])
-def search_vehicles(filters: VehicleSearchQuery = Depends(), _: User = Depends(get_current_user), vehicle_service: VehicleService = Depends(get_vehicle_service)) -> list[VehicleResponse]:
+def search_vehicles(filters: VehicleSearchQuery = Depends(), vehicle_service: VehicleService = Depends(get_vehicle_service)) -> list[VehicleResponse]:
     return vehicle_service.search(filters)
 
 
 @router.get("", response_model=list[VehicleResponse])
-def list_vehicles(_: User = Depends(get_current_user), vehicle_service: VehicleService = Depends(get_vehicle_service)) -> list[VehicleResponse]:
+def list_vehicles(vehicle_service: VehicleService = Depends(get_vehicle_service)) -> list[VehicleResponse]:
     return vehicle_service.get_all()
 
 

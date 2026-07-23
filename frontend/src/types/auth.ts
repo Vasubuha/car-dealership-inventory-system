@@ -1,4 +1,4 @@
-﻿export type UserRole = 'admin' | 'customer' | string;
+export type UserRole = 'admin' | 'customer' | string;
 export interface AuthUser {
   id?: number;
   username?: string;
@@ -22,7 +22,12 @@ export interface AuthContextValue {
   user: AuthUser | null;
   token: string | null;
   isAuthenticated: boolean;
+  isAuthModalOpen: boolean;
+  authModalTab: 'login' | 'register';
   login: (payload: LoginPayload) => Promise<AuthUser>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => void;
+  openLogin: (pendingAction?: () => void) => void;
+  openRegister: (pendingAction?: () => void) => void;
+  closeModal: () => void;
 }
