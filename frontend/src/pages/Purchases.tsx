@@ -15,8 +15,6 @@ import { formatCurrency } from '../utils/formatCurrency';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-// Using shared `formatCurrency` util from `src/utils/formatCurrency.js`
-
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -43,40 +41,40 @@ function PurchaseSearchBar({
   return (
     <div className="flex flex-col gap-3 sm:flex-row">
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
         <input
           id="purchase-filter-make"
           type="text"
           value={make}
           onChange={(e) => onMakeChange(e.target.value)}
           placeholder="Filter by make…"
-          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-9 text-sm text-slate-800 shadow-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-xl border border-slate-200/90 bg-white py-2.5 pl-9 pr-9 text-sm text-slate-800 shadow-2xs outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
         />
         {make && (
           <button
             onClick={() => onMakeChange('')}
             aria-label="Clear make filter"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
           >
             <X size={14} />
           </button>
         )}
       </div>
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
         <input
           id="purchase-filter-model"
           type="text"
           value={model}
           onChange={(e) => onModelChange(e.target.value)}
           placeholder="Filter by model…"
-          className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-9 text-sm text-slate-800 shadow-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+          className="w-full rounded-xl border border-slate-200/90 bg-white py-2.5 pl-9 pr-9 text-sm text-slate-800 shadow-2xs outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50"
         />
         {model && (
           <button
             onClick={() => onModelChange('')}
             aria-label="Clear model filter"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
           >
             <X size={14} />
           </button>
@@ -92,7 +90,7 @@ function LoadingSkeleton() {
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
-          className="animate-pulse rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"
+          className="animate-pulse rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs"
         >
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-2">
@@ -112,7 +110,7 @@ function LoadingSkeleton() {
 
 function EmptyState({ hasFilters }: { hasFilters: boolean }) {
   return (
-    <div className="grid min-h-72 place-items-center rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center shadow-sm">
+    <div className="grid min-h-72 place-items-center rounded-2xl border border-dashed border-slate-200/90 bg-white p-8 text-center shadow-2xs">
       <div>
         <ShoppingBag className="mx-auto mb-4 text-slate-300" size={48} />
         <h3 className="text-lg font-bold text-slate-800">
@@ -130,14 +128,14 @@ function EmptyState({ hasFilters }: { hasFilters: boolean }) {
 
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-4 rounded-2xl border border-rose-100 bg-rose-50 p-8 text-center">
-      <AlertCircle className="text-rose-400" size={40} />
+    <div className="flex flex-col items-center gap-4 rounded-2xl border border-rose-100 bg-rose-50/80 p-8 text-center">
+      <AlertCircle className="text-rose-500" size={40} />
       <div>
         <p className="font-semibold text-rose-700">{message}</p>
         <button
           id="purchase-history-retry"
           onClick={onRetry}
-          className="mt-3 inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700 active:scale-95"
+          className="mt-3 inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700 active:scale-95 shadow-xs"
         >
           <RefreshCw size={14} />
           Retry
@@ -150,10 +148,10 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 // Desktop table row
 function PurchaseHistoryTable({ purchases }: { purchases: Purchase[] }) {
   return (
-    <div className="hidden overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm lg:block">
+    <div className="hidden overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xs lg:block">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <tr className="border-b border-slate-100 bg-slate-50/80 text-left text-xs font-bold uppercase tracking-wider text-slate-500">
             <th className="px-5 py-4">Vehicle</th>
             <th className="px-5 py-4">Category</th>
             <th className="px-5 py-4 text-center">Qty</th>
@@ -162,16 +160,16 @@ function PurchaseHistoryTable({ purchases }: { purchases: Purchase[] }) {
             <th className="px-5 py-4 text-right">Date</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-50">
+        <tbody className="divide-y divide-slate-100/80">
           {purchases.map((p) => (
-            <tr key={p.purchase_id} className="group transition-colors hover:bg-blue-50/40">
+            <tr key={p.purchase_id} className="group transition-colors hover:bg-slate-50/70">
               <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-600">
+                  <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-blue-50/90 text-blue-600 border border-blue-100">
                     <Receipt size={16} />
                   </span>
                   <div>
-                    <p className="font-semibold text-slate-900">
+                    <p className="font-bold text-slate-900">
                       {p.make} {p.model}
                     </p>
                     <p className="text-xs text-slate-400">ID: {p.vehicle_id.slice(0, 8)}…</p>
@@ -179,18 +177,18 @@ function PurchaseHistoryTable({ purchases }: { purchases: Purchase[] }) {
                 </div>
               </td>
               <td className="px-5 py-4">
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
+                <span className="rounded-lg bg-slate-100/90 px-2.5 py-0.5 text-xs font-semibold text-slate-700 border border-slate-200/50">
                   {p.category}
                 </span>
               </td>
-              <td className="px-5 py-4 text-center font-medium text-slate-700">{p.quantity}</td>
-              <td className="px-5 py-4 text-right text-slate-700">
+              <td className="px-5 py-4 text-center font-bold text-slate-700">{p.quantity}</td>
+              <td className="px-5 py-4 text-right font-medium text-slate-700">
                 {formatCurrency(p.purchase_price)}
               </td>
-              <td className="px-5 py-4 text-right font-bold text-slate-900">
+              <td className="px-5 py-4 text-right font-extrabold text-slate-900">
                 {formatCurrency(p.total_price)}
               </td>
-              <td className="px-5 py-4 text-right text-slate-500">{formatDate(p.purchase_date)}</td>
+              <td className="px-5 py-4 text-right text-xs font-medium text-slate-500">{formatDate(p.purchase_date)}</td>
             </tr>
           ))}
         </tbody>
@@ -202,35 +200,35 @@ function PurchaseHistoryTable({ purchases }: { purchases: Purchase[] }) {
 // Mobile card
 function PurchaseHistoryCard({ purchase: p }: { purchase: Purchase }) {
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:shadow-md lg:hidden">
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs transition hover:shadow-md lg:hidden">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-600">
+          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
             <Receipt size={18} />
           </span>
           <div>
             <p className="font-bold text-slate-900">
               {p.make} {p.model}
             </p>
-            <span className="mt-0.5 inline-block rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">
+            <span className="mt-0.5 inline-block rounded-lg bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 border border-slate-200/50">
               {p.category}
             </span>
           </div>
         </div>
         <p className="text-right font-bold text-slate-900">{formatCurrency(p.total_price)}</p>
       </div>
-      <div className="grid grid-cols-2 gap-2 rounded-xl bg-slate-50 p-3 text-sm">
+      <div className="grid grid-cols-2 gap-2 rounded-xl bg-slate-50/80 p-3 text-sm border border-slate-100">
         <div>
-          <p className="text-xs text-slate-400">Unit Price</p>
-          <p className="font-medium text-slate-700">{formatCurrency(p.purchase_price)}</p>
+          <p className="text-xs text-slate-400 font-medium">Unit Price</p>
+          <p className="font-semibold text-slate-700">{formatCurrency(p.purchase_price)}</p>
         </div>
         <div>
-          <p className="text-xs text-slate-400">Quantity</p>
-          <p className="font-medium text-slate-700">{p.quantity}</p>
+          <p className="text-xs text-slate-400 font-medium">Quantity</p>
+          <p className="font-semibold text-slate-700">{p.quantity}</p>
         </div>
         <div className="col-span-2">
-          <p className="text-xs text-slate-400">Purchased on</p>
-          <p className="font-medium text-slate-700">{formatDate(p.purchase_date)}</p>
+          <p className="text-xs text-slate-400 font-medium">Purchased on</p>
+          <p className="font-semibold text-slate-700">{formatDate(p.purchase_date)}</p>
         </div>
       </div>
     </div>
@@ -246,10 +244,10 @@ function Pagination({
 }) {
   if (meta.total_pages <= 1) return null;
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-5 py-3 shadow-sm">
+    <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-white px-5 py-3.5 shadow-2xs">
       <p className="text-sm text-slate-500">
-        Page <span className="font-semibold text-slate-800">{meta.page}</span> of{' '}
-        <span className="font-semibold text-slate-800">{meta.total_pages}</span>
+        Page <span className="font-bold text-slate-900">{meta.page}</span> of{' '}
+        <span className="font-bold text-slate-900">{meta.total_pages}</span>
         <span className="ml-2 text-slate-400">({meta.total} records)</span>
       </p>
       <div className="flex gap-2">
@@ -257,7 +255,7 @@ function Pagination({
           id="purchase-pagination-prev"
           onClick={() => onPageChange(meta.page - 1)}
           disabled={meta.page <= 1}
-          className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex items-center gap-1 rounded-xl border border-slate-200/90 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <ChevronLeft size={15} />
           Prev
@@ -266,7 +264,7 @@ function Pagination({
           id="purchase-pagination-next"
           onClick={() => onPageChange(meta.page + 1)}
           disabled={meta.page >= meta.total_pages}
-          className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex items-center gap-1 rounded-xl border border-slate-200/90 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Next
           <ChevronRight size={15} />
@@ -301,22 +299,22 @@ export default function PurchaseHistoryPage() {
         {/* Header */}
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">My Purchase History</h1>
-            <p className="mt-1 text-sm text-slate-500">
+            <h1 className="text-2xl font-black text-slate-900 sm:text-3xl">My Purchase History</h1>
+            <p className="mt-1 text-sm text-slate-500 font-medium">
               All vehicles you have purchased, newest first.
             </p>
           </div>
           {!loading && !error && meta.total > 0 && (
-            <span className="self-start rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700 sm:self-auto">
+            <span className="self-start rounded-full bg-blue-50/90 px-3.5 py-1 text-xs font-bold text-blue-700 border border-blue-200/60 shadow-2xs sm:self-auto">
               {meta.total} purchase{meta.total !== 1 ? 's' : ''}
             </span>
           )}
         </div>
 
         {/* Search bar */}
-        <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Filter purchases
+        <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-2xs backdrop-blur-2xs">
+          <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500">
+            Filter Purchases
           </p>
           <PurchaseSearchBar
             make={make}

@@ -13,24 +13,24 @@ export default function StatsCards({ vehicles, totalRevenue, activeFilter, onSel
       label: 'Total vehicles',
       value: vehicles.length,
       icon: CarFront,
-      color: 'bg-blue-50 text-blue-600',
-      activeRing: 'ring-2 ring-blue-500 bg-blue-50/50',
+      color: 'bg-blue-50/90 text-blue-600 border border-blue-200/50',
+      activeRing: 'ring-2 ring-blue-500 border-blue-400 bg-blue-50/40',
     },
     {
       id: 'in_stock',
       label: 'Available vehicles',
       value: available,
       icon: PackageCheck,
-      color: 'bg-emerald-50 text-emerald-600',
-      activeRing: 'ring-2 ring-emerald-500 bg-emerald-50/50',
+      color: 'bg-emerald-50/90 text-emerald-600 border border-emerald-200/50',
+      activeRing: 'ring-2 ring-emerald-500 border-emerald-400 bg-emerald-50/40',
     },
     {
       id: 'low_stock',
-      label: 'Low stock',
+      label: 'Low stock alerts',
       value: low,
       icon: TriangleAlert,
-      color: 'bg-amber-50 text-amber-600',
-      activeRing: 'ring-2 ring-amber-500 bg-amber-50/50',
+      color: 'bg-amber-50/90 text-amber-600 border border-amber-200/50',
+      activeRing: 'ring-2 ring-amber-500 border-amber-400 bg-amber-50/40',
     },
     totalRevenue !== undefined && totalRevenue !== null
       ? {
@@ -38,8 +38,8 @@ export default function StatsCards({ vehicles, totalRevenue, activeFilter, onSel
           label: 'Total revenue',
           value: formatCurrency(totalRevenue),
           icon: DollarSign,
-          color: 'bg-emerald-50 text-emerald-600',
-          activeRing: 'ring-2 ring-emerald-500 bg-emerald-50/50',
+          color: 'bg-indigo-50/90 text-indigo-600 border border-indigo-200/50',
+          activeRing: 'ring-2 ring-indigo-500 border-indigo-400 bg-indigo-50/40',
           isCurrency: true,
         }
       : {
@@ -47,8 +47,8 @@ export default function StatsCards({ vehicles, totalRevenue, activeFilter, onSel
           label: 'Total sold out',
           value: sold,
           icon: CircleDollarSign,
-          color: 'bg-violet-50 text-violet-600',
-          activeRing: 'ring-2 ring-violet-500 bg-violet-50/50',
+          color: 'bg-violet-50/90 text-violet-600 border border-violet-200/50',
+          activeRing: 'ring-2 ring-violet-500 border-violet-400 bg-violet-50/40',
         },
   ];
 
@@ -60,18 +60,18 @@ export default function StatsCards({ vehicles, totalRevenue, activeFilter, onSel
           <Card
             key={label}
             onClick={() => !isCurrency && onSelectFilter && onSelectFilter(id)}
-            className={`p-5 transition-all duration-150 ${
-              !isCurrency ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-md' : ''
+            className={`p-5 transition-all duration-200 ${
+              !isCurrency ? 'cursor-pointer hover:-translate-y-1 hover:shadow-md active:scale-[0.99]' : ''
             } ${isActive ? activeRing : ''}`}
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm font-medium text-slate-500">{label}</p>
-                <p className={`mt-3 font-bold text-slate-900 ${isCurrency ? 'text-2xl sm:text-3xl tracking-tight' : 'text-3xl'}`}>
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</p>
+                <p className={`mt-3 font-extrabold text-slate-900 ${isCurrency ? 'text-2xl sm:text-3xl tracking-tight' : 'text-3xl'}`}>
                   {value}
                 </p>
               </div>
-              <span className={`rounded-xl p-3 ${color}`}>
+              <span className={`rounded-xl p-3 shadow-2xs ${color}`}>
                 <Icon size={22} />
               </span>
             </div>

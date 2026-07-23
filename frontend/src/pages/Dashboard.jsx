@@ -103,16 +103,16 @@ export default function Dashboard({
             onSelectFilter={(stockVal) => setFilters((f) => ({ ...f, stock: stockVal }))}
           />
         )}
-        <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
-          <div className="mb-3 flex items-center justify-between">
+        <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-2xs backdrop-blur-2xs">
+          <div className="mb-3.5 flex items-center justify-between">
             <div>
-              <h2 className="font-bold text-slate-900">{title || 'Inventory overview'}</h2>
-              <p className="text-sm text-slate-500">
-                {filtered.length} vehicle{filtered.length === 1 ? '' : 's'} matching
+              <h2 className="font-extrabold text-slate-900 text-lg sm:text-xl">{title || 'Inventory Overview'}</h2>
+              <p className="text-sm font-medium text-slate-500">
+                {filtered.length} vehicle{filtered.length === 1 ? '' : 's'} matching criteria
                 {filters.stock && (
                   <button
                     onClick={() => setFilters((f) => ({ ...f, stock: '' }))}
-                    className="ml-2 font-semibold text-blue-600 hover:underline"
+                    className="ml-2 font-bold text-blue-600 hover:text-blue-700 hover:underline transition"
                   >
                     (Clear stock filter)
                   </button>

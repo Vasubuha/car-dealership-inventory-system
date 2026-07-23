@@ -19,6 +19,8 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/admin" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/admin/dashboard" element={<Navigate to="/dashboard" replace />} />
       <Route path="/login" element={<Authentication />} />
       <Route path="/register" element={<Authentication />} />
       <Route element={protectedPage(<MainLayout />)}>
