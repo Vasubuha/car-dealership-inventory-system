@@ -10,6 +10,7 @@ import Loader from '../components/common/Loader';
 import EmptyState from '../components/common/EmptyState';
 import ConfirmDialog from '../components/common/ConfirmDialog';
 import RestockModal from '../components/inventory/RestockModal';
+import AdminDashboardView from '../components/dashboard/AdminDashboardView';
 import { useVehicles } from '../hooks/useVehicles';
 import { vehicleService } from '../services/vehicleService';
 import { purchaseService } from '../services/purchaseService';
@@ -24,6 +25,7 @@ export default function Dashboard({
 }) {
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
+
   const hook = useVehicles();
   const vehicles = sourceVehicles ?? hook.vehicles;
   const loading = sourceLoading ?? hook.loading;
@@ -36,13 +38,13 @@ export default function Dashboard({
   const [totalRevenue, setTotalRevenue] = useState(null);
 
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin && !title) {
       purchaseService
         .getRevenueSummary()
         .then((res) => setTotalRevenue(res.total_revenue))
         .catch(() => setTotalRevenue(0));
     }
-  }, [isAdmin, vehicles]);
+  }, [isAdmin, title, vehicles]);
 
   const categories = useMemo(() => [...new Set(vehicles.map((v) => v.category))], [vehicles]);
 
@@ -93,62 +95,66 @@ export default function Dashboard({
 
   return (
     <PageContainer>
-      <div className="space-y-7">
-        <DashboardHeader count={vehicles.length} />
-        {!title && (
-          <StatsCards
-            vehicles={vehicles}
-            totalRevenue={isAdmin ? totalRevenue : undefined}
-            activeFilter={filters.stock}
-            onSelectFilter={(stockVal) => setFilters((f) => ({ ...f, stock: stockVal }))}
-          />
-        )}
-        <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-2xs backdrop-blur-2xs">
-          <div className="mb-3.5 flex items-center justify-between">
-            <div>
-              <h2 className="font-extrabold text-slate-900 text-lg sm:text-xl">{title || 'Inventory Overview'}</h2>
-              <p className="text-sm font-medium text-slate-500">
-                {filtered.length} vehicle{filtered.length === 1 ? '' : 's'} matching criteria
-                {filters.stock && (
-                  <button
-                    onClick={() => setFilters((f) => ({ ...f, stock: '' }))}
-                    className="ml-2 font-bold text-blue-600 hover:text-blue-700 hover:underline transition"
-                  >
-                    (Clear stock filter)
-                  </button>
-                )}
-              </p>
+      {isAdmin && !title ? (
+        <AdminDashboardView />
+      ) : (
+        <div className="space-y-7">
+          <DashboardHeader count={vehicles.length} />
+          {!title && (
+            <StatsCards
+              vehicles={vehicles}
+              totalRevenue={isAdmin ? totalRevenue : undefined}
+              activeFilter={filters.stock}
+              onSelectFilter={(stockVal) => setFilters((f) => ({ ...f, stock: stockVal }))}
+            />
+          )}
+          <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-2xs backdrop-blur-2xs">
+            <div className="mb-3.5 flex items-center justify-between">
+              <div>
+                <h2 className="font-extrabold text-slate-900 text-lg sm:text-xl">{title || 'Inventory Overview'}</h2>
+                <p className="text-sm font-medium text-slate-500">
+                  {filtered.length} vehicle{filtered.length === 1 ? '' : 's'} matching criteria
+                  {filters.stock && (
+                    <button
+                      onClick={() => setFilters((f) => ({ ...f, stock: '' }))}
+                      className="ml-2 font-bold text-blue-600 hover:text-blue-700 hover:underline transition"
+                    >
+                      (Clear stock filter)
+                    </button>
+                  )}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3 xl:flex-row">
+              <SearchBar value={search} onChange={setSearch} />
+              <div className="xl:w-[720px]">
+                <FilterBar
+                  filters={filters}
+                  categories={categories}
+                  onChange={(key, value) => setFilters((f) => ({ ...f, [key]: value }))}
+                />
+              </div>
             </div>
           </div>
-          <div className="flex flex-col gap-3 xl:flex-row">
-            <SearchBar value={search} onChange={setSearch} />
-            <div className="xl:w-[720px]">
-              <FilterBar
-                filters={filters}
-                categories={categories}
-                onChange={(key, value) => setFilters((f) => ({ ...f, [key]: value }))}
-              />
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <div className="rounded-xl border border-rose-100 bg-rose-50 p-5 text-rose-700">
+              <AlertCircle className="inline mr-2" size={18} />
+              {error}
             </div>
-          </div>
+          ) : filtered.length ? (
+            <VehicleGrid
+              vehicles={filtered}
+              onPurchase={purchase}
+              onRestock={(v) => setRestockingVehicle(v)}
+              onDelete={setDeleting}
+            />
+          ) : (
+            <EmptyState />
+          )}
         </div>
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <div className="rounded-xl border border-rose-100 bg-rose-50 p-5 text-rose-700">
-            <AlertCircle className="inline mr-2" size={18} />
-            {error}
-          </div>
-        ) : filtered.length ? (
-          <VehicleGrid
-            vehicles={filtered}
-            onPurchase={purchase}
-            onRestock={(v) => setRestockingVehicle(v)}
-            onDelete={setDeleting}
-          />
-        ) : (
-          <EmptyState />
-        )}
-      </div>
+      )}
       <ConfirmDialog
         open={Boolean(deleting)}
         title="Delete vehicle?"

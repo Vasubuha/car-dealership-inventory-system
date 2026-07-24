@@ -8,6 +8,7 @@ from app.api.auth import router as auth_router
 from app.api.vehicles import router as vehicle_router
 from app.api.inventory import router as inventory_router
 from app.api.purchases import router as purchases_router
+from app.api.dashboard import router as dashboard_router
 from fastapi.middleware.cors import CORSMiddleware
 
 import os
@@ -72,6 +73,7 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(vehicle_router)
 app.include_router(inventory_router)
 app.include_router(purchases_router)
+app.include_router(dashboard_router)
 
 
 @app.exception_handler(Exception)
