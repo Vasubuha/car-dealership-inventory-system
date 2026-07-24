@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Pytest Passed](https://img.shields.io/badge/Tests-36%20Passed-brightgreen?style=for-the-badge&logo=pytest)](https://docs.pytest.org/)
+[![Pytest Passed](https://img.shields.io/badge/Tests-39%20Passed-brightgreen?style=for-the-badge&logo=pytest)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 > 🚀 **Live Demo**: [https://car-dealership-inventory-system-sand.vercel.app](https://car-dealership-inventory-system-sand.vercel.app/)
@@ -454,7 +454,27 @@ sequenceDiagram
 
 <div align="center">
 
-### Customer Marketplace
+### Admin Business Intelligence Dashboard
+![Admin Business Intelligence Dashboard](docs/screenshots/admin%20daskboard.png)
+
+<br/>
+
+### Admin Analytics & Revenue Trajectory
+![Admin Analytics & Revenue Trajectory](docs/screenshots/admin%20daskboard-2.png)
+
+<br/>
+
+### Enterprise Inventory Management Workspace
+![Enterprise Inventory Management Workspace](docs/screenshots/inventory.png)
+
+<br/>
+
+### Add Vehicle Management
+![Add Vehicle Management](docs/screenshots/Add_vehicle.png)
+
+<br/>
+
+### Customer Marketplace Overview
 ![Marketplace Overview](docs/screenshots/vehicle.png)
 
 <br/>
