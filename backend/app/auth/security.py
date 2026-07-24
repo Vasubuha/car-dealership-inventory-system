@@ -1,6 +1,6 @@
 # pyrefly: ignore [missing-import]
 import bcrypt
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
@@ -32,7 +32,7 @@ def verify_password(plain_password: str, password_hash: str) -> bool:
 
 def create_access_token(user_id: int) -> str:
     settings = get_settings()
-    issued_at = datetime.now(UTC)
+    issued_at = datetime.now(timezone.utc)
     expires_at = issued_at + timedelta(minutes=settings.access_token_expire_minutes)
     return jwt.encode(
         {"sub": str(user_id), "iat": issued_at, "exp": expires_at},
