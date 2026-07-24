@@ -22,74 +22,74 @@ function RecentPurchasesTable({ purchases = [] }) {
 
   return (
     <Card className="overflow-hidden p-0 shadow-2xs">
-      <div className="border-b border-slate-200/80 bg-slate-50/50 p-5">
+      <div className="border-b border-slate-200/80 bg-slate-50/60 px-5 py-3.5">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-extrabold text-slate-900">Recent Customer Purchases</h3>
+            <h3 className="text-sm font-extrabold text-slate-900">Recent Customer Purchases</h3>
             <p className="text-xs font-medium text-slate-500">
               Latest transactions recorded across dealership
             </p>
           </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-600 border border-blue-200/60">
-            <ShoppingBag size={14} />
-            {purchases.length} Recent Sale{purchases.length === 1 ? '' : 's'}
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold text-blue-600 border border-blue-200/60">
+            <ShoppingBag size={13} />
+            {purchases.length} Sale{purchases.length === 1 ? '' : 's'}
           </span>
         </div>
       </div>
 
       {purchases.length === 0 ? (
-        <div className="p-12 text-center text-sm font-medium text-slate-400">
+        <div className="p-8 text-center text-xs font-medium text-slate-400">
           No customer purchases recorded yet.
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-600">
-            <thead className="border-b border-slate-200/80 bg-slate-100/60 text-xs font-bold uppercase tracking-wider text-slate-500">
+          <table className="w-full text-left text-xs text-slate-600">
+            <thead className="border-b border-slate-200/80 bg-slate-100/70 text-[11px] font-bold uppercase tracking-wider text-slate-500">
               <tr>
-                <th className="px-5 py-3.5">Customer</th>
-                <th className="px-5 py-3.5">Vehicle</th>
-                <th className="px-5 py-3.5">Unit Price</th>
-                <th className="px-5 py-3.5">Qty</th>
-                <th className="px-5 py-3.5">Total Amount</th>
-                <th className="px-5 py-3.5">Purchase Date</th>
+                <th className="px-4 py-2.5">Customer</th>
+                <th className="px-4 py-2.5">Vehicle</th>
+                <th className="px-4 py-2.5 text-right">Unit Price</th>
+                <th className="px-4 py-2.5 text-right">Qty</th>
+                <th className="px-4 py-2.5 text-right">Total Amount</th>
+                <th className="px-4 py-2.5 text-right">Purchase Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200/70 bg-white font-medium">
+            <tbody className="divide-y divide-slate-100 bg-white font-medium">
               {purchases.map((item) => (
-                <tr key={item.id} className="transition hover:bg-slate-50/70">
-                  <td className="whitespace-nowrap px-5 py-4">
-                    <div className="flex items-center gap-2.5">
-                      <div className="grid h-8 w-8 place-items-center rounded-full bg-slate-100 text-slate-600">
-                        <UserIcon size={16} />
+                <tr key={item.id} className="transition hover:bg-slate-50/80">
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <div className="grid h-7 w-7 place-items-center rounded-full bg-slate-100 text-slate-500 shrink-0">
+                        <UserIcon size={14} />
                       </div>
-                      <div>
-                        <p className="font-bold text-slate-900">{item.customer_name}</p>
-                        <p className="text-xs text-slate-500">{item.customer_email}</p>
+                      <div className="truncate max-w-[160px]">
+                        <p className="font-bold text-slate-900 truncate">{item.customer_name}</p>
+                        <p className="text-[11px] text-slate-400 truncate">{item.customer_email}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-5 py-4">
+                  <td className="whitespace-nowrap px-4 py-3">
                     <div>
-                      <p className="font-bold text-slate-900">
+                      <p className="font-bold text-slate-900 text-sm">
                         {item.vehicle_make} {item.vehicle_model}
                       </p>
-                      <span className="inline-block rounded bg-slate-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-slate-600 uppercase">
+                      <span className="inline-block rounded bg-slate-100 px-1.5 py-0.2 text-[10px] font-bold tracking-wide text-slate-500 uppercase">
                         {item.category}
                       </span>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-5 py-4 font-semibold text-slate-700">
+                  <td className="whitespace-nowrap px-4 py-3 text-right font-semibold text-slate-700">
                     {formatCurrency(item.unit_price)}
                   </td>
-                  <td className="whitespace-nowrap px-5 py-4">
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-xs font-extrabold text-blue-700">
+                  <td className="whitespace-nowrap px-4 py-3 text-right">
+                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-[11px] font-extrabold text-blue-700">
                       {item.quantity}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-5 py-4 font-extrabold text-slate-900">
+                  <td className="whitespace-nowrap px-4 py-3 text-right font-extrabold text-slate-900 text-sm">
                     {formatCurrency(item.total_price)}
                   </td>
-                  <td className="whitespace-nowrap px-5 py-4 text-xs font-semibold text-slate-500">
+                  <td className="whitespace-nowrap px-4 py-3 text-right text-[11px] font-normal text-slate-400">
                     {formatDate(item.created_at)}
                   </td>
                 </tr>

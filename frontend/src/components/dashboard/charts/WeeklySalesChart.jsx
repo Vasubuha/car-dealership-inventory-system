@@ -31,36 +31,37 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 function WeeklySalesChart({ data = [] }) {
   return (
-    <Card className="p-5">
-      <div className="mb-4 flex items-center justify-between">
+    <Card className="flex flex-col justify-between p-5 h-full">
+      <div className="mb-3 flex items-start justify-between">
         <div>
-          <h3 className="text-base font-extrabold text-slate-900">Weekly Sales Breakdown</h3>
+          <h3 className="text-sm font-extrabold text-slate-900">Weekly Sales Breakdown</h3>
           <p className="text-xs font-medium text-slate-500">Vehicles sold per day this week</p>
         </div>
       </div>
-      <div className="h-72 w-full">
+
+      <div className="h-64 w-full">
         {data.length === 0 ? (
           <div className="flex h-full items-center justify-center text-xs font-medium text-slate-400">
-            No sales data this week
+            No sales recorded this week
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+            <BarChart data={data} margin={{ top: 8, right: 8, left: -24, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
               <XAxis
                 dataKey="day"
-                tick={{ fontSize: 12, fill: '#64748b', fontWeight: 600 }}
+                tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }}
                 tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
+                axisLine={{ stroke: '#e2e8f0' }}
               />
               <YAxis
                 allowDecimals={false}
-                tick={{ fontSize: 11, fill: '#64748b' }}
+                tick={{ fontSize: 10, fill: '#64748b' }}
                 tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
+                axisLine={{ stroke: '#e2e8f0' }}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="sales" fill="#3b82f6" radius={[6, 6, 0, 0]} maxBarSize={40} />
+              <Bar dataKey="sales" fill="#3b82f6" radius={[6, 6, 0, 0]} maxBarSize={32} />
             </BarChart>
           </ResponsiveContainer>
         )}

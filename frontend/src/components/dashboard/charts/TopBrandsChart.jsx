@@ -30,15 +30,18 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 function TopBrandsChart({ data = [] }) {
+  const isSparse = data.length <= 2;
+
   return (
-    <Card className="p-5">
-      <div className="mb-4 flex items-center justify-between">
+    <Card className="flex flex-col justify-between p-5 h-full">
+      <div className="mb-2 flex items-start justify-between">
         <div>
-          <h3 className="text-base font-extrabold text-slate-900">Top Selling Brands</h3>
+          <h3 className="text-sm font-extrabold text-slate-900">Top Selling Brands</h3>
           <p className="text-xs font-medium text-slate-500">Highest grossing manufacturers</p>
         </div>
       </div>
-      <div className="h-72 w-full">
+
+      <div className="h-64 w-full">
         {data.length === 0 ? (
           <div className="flex h-full items-center justify-center text-xs font-medium text-slate-400">
             No brand performance data available
@@ -48,14 +51,15 @@ function TopBrandsChart({ data = [] }) {
             <BarChart
               data={data}
               layout="vertical"
-              margin={{ top: 10, right: 20, left: 20, bottom: 0 }}
+              margin={{ top: 8, right: 16, left: 8, bottom: 0 }}
+              barCategoryGap={isSparse ? '35%' : '20%'}
             >
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
               <XAxis
                 type="number"
-                tick={{ fontSize: 11, fill: '#64748b' }}
+                tick={{ fontSize: 10, fill: '#64748b' }}
                 tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
+                axisLine={{ stroke: '#e2e8f0' }}
                 tickFormatter={(val) =>
                   val >= 10000000
                     ? `₹${(val / 10000000).toFixed(1)}Cr`
@@ -67,13 +71,18 @@ function TopBrandsChart({ data = [] }) {
               <YAxis
                 dataKey="brand"
                 type="category"
-                tick={{ fontSize: 12, fill: '#334155', fontWeight: 600 }}
+                tick={{ fontSize: 11, fill: '#334155', fontWeight: 600 }}
                 tickLine={false}
-                axisLine={{ stroke: '#cbd5e1' }}
-                width={90}
+                axisLine={{ stroke: '#e2e8f0' }}
+                width={95}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="revenue" fill="#6366f1" radius={[0, 6, 6, 0]} maxBarSize={28} />
+              <Bar
+                dataKey="revenue"
+                fill="#6366f1"
+                radius={[0, 6, 6, 0]}
+                maxBarSize={isSparse ? 28 : 24}
+              />
             </BarChart>
           </ResponsiveContainer>
         )}
