@@ -450,27 +450,20 @@ sequenceDiagram
 
 ## 🖼️ Screenshots
 
-> *Placeholders for production application UI screenshots.*
-
 <div align="center">
 
 ### Customer Marketplace
-![Marketplace Overview](https://placehold.co/1200x600/1e293b/6366f1?text=Customer+Vehicle+Marketplace+UI)
+![Marketplace Overview](docs/screenshots/vehicle.png)
 
 <br/>
 
-### Advanced Search & Filtering
-![Search & Filter](https://placehold.co/1200x450/1e293b/38bdf8?text=Real-Time+Multi-Filter+%26+Category+Selector)
+### Vehicle Card Details
+![Vehicle Card](docs/screenshots/vehicle-card.png)
 
 <br/>
 
-### Admin Analytics & Inventory Management
-![Admin Dashboard](https://placehold.co/1200x600/0f172a/10b981?text=Admin+Revenue+Analytics+%26+Stock+Management)
-
-<br/>
-
-### Interactive Purchase History & Modals
-![Purchase History](https://placehold.co/1200x450/1e293b/f59e0b?text=Paginated+Purchase+History+%26+Order+Receipts)
+### Interactive Purchase History
+![Purchase History](docs/screenshots/my-purchases.png)
 
 </div>
 
