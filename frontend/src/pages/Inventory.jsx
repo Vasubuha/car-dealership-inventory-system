@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AlertCircle, PlusCircle, RefreshCw } from 'lucide-react';
 import PageContainer from '../components/layout/PageContainer';
 import ConfirmDialog from '../components/common/ConfirmDialog';
