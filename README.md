@@ -10,6 +10,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 > 🚀 **Live Demo**: [https://car-dealership-inventory-system-sand.vercel.app](https://car-dealership-inventory-system-sand.vercel.app/)
+>
+> 🔑 **Demo Admin Credentials**:
+> - **Email**: `admin@dealership.com`
+> - **Password**: `Admin@123`
 
 > A full-stack, enterprise-grade Car Dealership Inventory & Marketplace Management System built with **Test-Driven Development (TDD)** principles, **FastAPI**, **React 19**, **PostgreSQL**, and **Tailwind CSS**. Built as part of the **Incubyte AI Technical Assessment**.
 
@@ -18,6 +22,7 @@
 ## 📋 Table of Contents
 
 - [Project Description](#-project-description)
+- [Demo Credentials](#-demo-credentials)
 - [Features](#-features)
   - [Authentication & Security](#-authentication--security)
   - [Customer Marketplace](#-customer-marketplace)
@@ -55,6 +60,17 @@ Engineered using strict **Test-Driven Development (TDD)** methodology, the platf
 - **Role-Based Access Control (RBAC)**: Secure separation between regular Customers and privileged Dealership Administrators.
 - **Transactional Consistency**: Atomic inventory decrementing and purchase recording to guarantee zero overselling under race conditions.
 - **Modern Responsive UX**: Sleek glassmorphism UI built with React 19, Tailwind CSS v4, Framer Motion, and Zod validation.
+
+---
+
+## 🔑 Demo Credentials
+
+To test both regular user and admin functionality on the [Live Demo](https://car-dealership-inventory-system-sand.vercel.app/), use the pre-configured credentials below:
+
+| Role | Email | Password | Access Capabilities |
+| :--- | :--- | :--- | :--- |
+| 🛡️ **Administrator** | `admin@dealership.com` | `Admin@123` | Full access to Admin Dashboard, Vehicle Restock/CRUD, Revenue Summaries, and Inventory Management. |
+| 👤 **Customer (Sample)** | *Register any new account* | *Any valid password* | Vehicle Catalog Browsing, Atomic Checkout/Purchase, Personal Purchase History. |
 
 ---
 
